@@ -130,8 +130,7 @@ if __name__ == '__main__':
     parser.add_argument('--extra_tag', type=str, default="", help="Anything extra")
 
     # 单独训练
-    parser.add_argument('--imp_model_pt', type=str, default="", help="the way of imputation model weights")
-
+    parser.add_argument('--imp_model_pt', type=str, default="checkpoint.pth")
 
 
 

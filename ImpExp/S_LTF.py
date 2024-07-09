@@ -7,6 +7,7 @@ import torch.nn as nn
 from torch import optim
 import os
 import time
+import copy
 import warnings
 import numpy as np
 from utils.dtw_metric import dtw,accelerated_dtw
@@ -19,6 +20,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_I, self).__init__(args)
         self.args = args
+        self.imp_model = self._bulid_imputation_model()
 
     def _build_model(self):
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -28,14 +30,17 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         return model
 
     def _bulid_imputation_model(self):
-        imp_args = self.args.copy()
+        imp_args = copy.deepcopy(self.args)
+        imp_args.task_name = 'imputation'
         imp_args.label_len = 0
         imp_args.pred_len = 0
-        self.imp_model = self.model_dict[self.args.model].Model(imp_args)
+        imp_model = self.model_dict[self.args.model].Model(imp_args)
 
         # 装载填补模型权重
-        self.imp_model.load_state_dict(torch.load(self.args.imp_model_pt))
-        self.imp_model.eval()
+        imp_model.load_state_dict(torch.load(self.args.imp_model_pt))
+        imp_model.to("cuda")
+        imp_model.eval()
+        return imp_model
 
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
@@ -53,34 +58,53 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         total_loss = []
         self.model.eval()
         with torch.no_grad():
-            for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(vali_loader):
-                batch_x = batch_x.float().to(self.device)
-                batch_y = batch_y.float()
-
+            for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(vali_loader):
+                batch_x_raw = batch_x_raw.float().to(self.device)
+                batch_y_raw = batch_y_raw.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
+                ## 填补
+                # random mask
+                B, T, N = batch_x_raw.shape
+                mask = torch.rand((B, T, N)).to(self.device)
+                mask[mask <= self.args.mask_rate] = 0  # masked
+                mask[mask > self.args.mask_rate] = 1  # remained
+                inp = batch_x_raw.masked_fill(mask == 0, 0)
+
+                # 输入
+                batch_x_imp = self.imp_model(inp, batch_x_mark, None, None, mask)
+
+                # 补回去被填充的部分
+                batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
+
+                # 将batch_x_imp属于label_len部分赋值给batch_y
+                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
+                
+
+                ## 预测
                 # decoder input
-                dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+
                 # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
                         if self.args.output_attention:
-                            outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
+                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
                         else:
-                            outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 else:
                     if self.args.output_attention:
-                        outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
+                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
                     else:
-                        outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                batch_y = batch_y[:, -self.args.pred_len:, f_dim:].to(self.device)
+                batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:].to(self.device)
 
                 pred = outputs.detach().cpu()
-                true = batch_y.detach().cpu()
+                true = batch_y_imp.detach().cpu()
 
                 loss = criterion(pred, true)
 
@@ -90,6 +114,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         return total_loss
 
     def train(self, setting):
+        
         train_data, train_loader = self._get_data(flag='train')
         vali_data, vali_loader = self._get_data(flag='val')
         test_data, test_loader = self._get_data(flag='test')
@@ -132,20 +157,18 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 inp = batch_x_raw.masked_fill(mask == 0, 0)
 
                 # 输入
-                batch_x_imp = self.model(inp, batch_x_mark, None, None, mask)
+                batch_x_imp = self.imp_model(inp, batch_x_mark, None, None, mask)
 
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
                 # 将batch_x_imp属于label_len部分赋值给batch_y
-                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.arg.pred_len:,:]],dim=1).float().to(self.device)
+                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
                 
-
                 ## 预测
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
                 dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
-
                 # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
@@ -220,39 +243,56 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
         self.model.eval()
         with torch.no_grad():
-            for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(test_loader):
-                batch_x = batch_x.float().to(self.device)
-                batch_y = batch_y.float().to(self.device)
-
+            for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
+                batch_x_raw = batch_x_raw.float().to(self.device)
+                batch_y_raw = batch_y_raw.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
 
+                ## 填补
+                # random mask
+                B, T, N = batch_x_raw.shape
+                mask = torch.rand((B, T, N)).to(self.device)
+                mask[mask <= self.args.mask_rate] = 0  # masked
+                mask[mask > self.args.mask_rate] = 1  # remained
+                inp = batch_x_raw.masked_fill(mask == 0, 0)
+
+                # 输入
+                batch_x_imp = self.imp_model(inp, batch_x_mark, None, None, mask)
+
+                # 补回去被填充的部分
+                batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
+
+                # 将batch_x_imp属于label_len部分赋值给batch_y
+                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
+                
+                ## 预测
                 # decoder input
-                dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+
                 # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
                         if self.args.output_attention:
-                            outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
+                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
                         else:
-                            outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 else:
                     if self.args.output_attention:
-                        outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
-
+                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
                     else:
-                        outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-
+                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, :]
-                batch_y = batch_y[:, -self.args.pred_len:, :].to(self.device)
+                batch_y_imp = batch_y_imp[:, -self.args.pred_len:, :].to(self.device)
                 outputs = outputs.detach().cpu().numpy()
-                batch_y = batch_y.detach().cpu().numpy()
+                batch_y_imp = batch_y_imp.detach().cpu().numpy()
+
                 if test_data.scale and self.args.inverse:
                     shape = outputs.shape
                     outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
-                    batch_y = test_data.inverse_transform(batch_y.squeeze(0)).reshape(shape)
+                    batch_y_imp = test_data.inverse_transform(batch_y_imp.squeeze(0)).reshape(shape)
         
                 outputs = outputs[:, :, f_dim:]
                 batch_y = batch_y[:, :, f_dim:]
@@ -263,11 +303,13 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 preds.append(pred)
                 trues.append(true)
                 if i % 20 == 0:
-                    input = batch_x.detach().cpu().numpy()
+                    raw = batch_x_raw.detach().cpu().numpy()
+                    input = batch_x_imp.detach().cpu().numpy()
                     if test_data.scale and self.args.inverse:
                         shape = input.shape
+                        raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
                         input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
-                    gt = np.concatenate((input[0, :, -1], true[0, :, -1]), axis=0)
+                    gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
                     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
                     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
