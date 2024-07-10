@@ -4,3 +4,6 @@ long_term_forecast_ETTh1_0.25_96_96_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm16_nh8_e
 long_term_forecast_ETTh1_0.25_96_96_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.3973369002342224, mae:0.4191591739654541, dtw:-999
 
+long_term_forecast_ETTh1_0.25_96_96_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.39449170231819153, mae:0.41603848338127136, dtw:-999
+
