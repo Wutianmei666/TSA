@@ -10,6 +10,7 @@ python -u mix_run.py \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
   --model_id ETTh1_0.25_96_96 \
+  --lradj cosine \
   --model $model_name \
   --data ETTh1 \
   --features M \
@@ -23,10 +24,8 @@ python -u mix_run.py \
   --dec_in 7 \
   --c_out 7 \
   --d_model 16 \
-  --batch_size 16 \
   --d_ff 32 \
   --des 'Exp' \
   --itr 1 \
-  --top_k 3 \
-  --lradj cosine\
-  --lr 0.01
+  --top_k 5
+  

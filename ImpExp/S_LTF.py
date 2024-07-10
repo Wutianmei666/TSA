@@ -80,13 +80,13 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
                 # 将batch_x_imp属于label_len部分赋值给batch_y
-                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
+                #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
                 
 
                 ## 预测
                 # decoder input
-                dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_x_imp[:, -self.args.label_len:, :], dec_inp], dim=1).float().to(self.device)
 
                 # encoder - decoder
                 if self.args.use_amp:
@@ -102,10 +102,10 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:].to(self.device)
+                batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:].to(self.device)
 
                 pred = outputs.detach().cpu()
-                true = batch_y_imp.detach().cpu()
+                true = batch_y_raw.detach().cpu()
 
                 loss = criterion(pred, true)
 
@@ -133,12 +133,13 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         criterion = self._select_criterion()
         if self.args.use_amp:
             scaler = torch.cuda.amp.GradScaler()
-
+            
         for epoch in range(self.args.train_epochs):
             iter_count = 0
             train_loss = []
 
             self.model.train()
+            self.imp_model.eval()
             epoch_time = time.time()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(train_loader):
                 iter_count += 1
@@ -158,17 +159,13 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
                 # 输入
                 batch_x_imp = self.imp_model(inp, batch_x_mark, None, None, mask)
-
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
-                # 将batch_x_imp属于label_len部分赋值给batch_y
-                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
-                
                 ## 预测
                 # decoder input
-                dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_x_imp[:, -self.args.label_len:, :], dec_inp], dim=1).float().to(self.device)
                 # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
@@ -179,20 +176,18 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
                         f_dim = -1 if self.args.features == 'MS' else 0
                         outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                        batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:]
-                        loss = criterion(outputs, batch_y_imp)
+                        batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
+                        loss = criterion(outputs, batch_y_raw)
                         train_loss.append(loss.item())
                 else:
                     if self.args.output_attention:
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
                     else:
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
-
-
                     f_dim = -1 if self.args.features == 'MS' else 0
                     outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                    batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:]
-                    loss = criterion(outputs, batch_y_imp)
+                    batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
+                    loss = criterion(outputs, batch_y_raw)
                     train_loss.append(loss.item())
 
                 if (i + 1) % 100 == 0:
@@ -265,12 +260,12 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
                 # 将batch_x_imp属于label_len部分赋值给batch_y
-                batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
+                #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
                 
                 ## 预测
                 # decoder input
-                dec_inp = torch.zeros_like(batch_y_imp[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_y_imp[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
+                dec_inp = torch.cat([batch_x_imp[:, -self.args.label_len:, :], dec_inp], dim=1).float().to(self.device)
 
                 # encoder - decoder
                 if self.args.use_amp:
@@ -286,20 +281,20 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, :]
-                batch_y_imp = batch_y_imp[:, -self.args.pred_len:, :].to(self.device)
+                batch_y_raw = batch_y_raw[:, -self.args.pred_len:, :].to(self.device)
                 outputs = outputs.detach().cpu().numpy()
-                batch_y_imp = batch_y_imp.detach().cpu().numpy()
+                batch_y_raw = batch_y_raw.detach().cpu().numpy()
 
                 if test_data.scale and self.args.inverse:
                     shape = outputs.shape
                     outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
-                    batch_y_imp = test_data.inverse_transform(batch_y_imp.squeeze(0)).reshape(shape)
+                    batch_y_raw = test_data.inverse_transform(batch_y_raw.squeeze(0)).reshape(shape)
         
                 outputs = outputs[:, :, f_dim:]
-                batch_y_imp = batch_y_imp[:, :, f_dim:]
+                batch_y_raw = batch_y_raw[:, :, f_dim:]
 
                 pred = outputs
-                true = batch_y_imp
+                true = batch_y_raw
 
                 preds.append(pred)
                 trues.append(true)
@@ -327,24 +322,24 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
             os.makedirs(folder_path)
         
         # dtw calculation
-        # if self.args.use_dtw:
-        #     dtw_list = []
-        #     manhattan_distance = lambda x, y: np.abs(x - y)
-        #     for i in range(preds.shape[0]):
-        #         x = preds[i].reshape(-1,1)
-        #         y = trues[i].reshape(-1,1)
-        #         if i % 100 == 0:
-        #             print("calculating dtw iter:", i)
-        #         d, _, _, _ = accelerated_dtw(x, y, dist=manhattan_distance)
-        #         dtw_list.append(d)
-        #     dtw = np.array(dtw_list).mean()
-        # else:
-        #     dtw = -999
+        if self.args.use_dtw:
+            dtw_list = []
+            manhattan_distance = lambda x, y: np.abs(x - y)
+            for i in range(preds.shape[0]):
+                x = preds[i].reshape(-1,1)
+                y = trues[i].reshape(-1,1)
+                if i % 100 == 0:
+                    print("calculating dtw iter:", i)
+                d, _, _, _ = accelerated_dtw(x, y, dist=manhattan_distance)
+                dtw_list.append(d)
+            dtw = np.array(dtw_list).mean()
+        else:
+            dtw = -999
             
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
-        #print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f = open("result_long_term_forecast.txt", 'a')
+        print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f = open("result_long_term_forecast_imp_i.txt", 'a')
         f.write(setting + "  \n")
         #f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f.write('\n')

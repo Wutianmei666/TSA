@@ -83,7 +83,7 @@ if __name__ == '__main__':
                         help='the length of segmen-wise iteration of SegRNN')
 
     # optimization
-    parser.add_argument('--num_workers', type=int, default=5, help='data loader num workers')
+    parser.add_argument('--num_workers', type=int, default=10, help='data loader num workers')
     parser.add_argument('--itr', type=int, default=1, help='experiments times')
     parser.add_argument('--train_epochs', type=int, default=10, help='train epochs')
     parser.add_argument('--batch_size', type=int, default=16, help='batch size of train input data')
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     parser.add_argument('--imp_model_pt', type=str, default="checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/Rcheckpoint.pth")
 
 
-
+    
     args = parser.parse_args()
     # args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
     args.use_gpu = True if torch.cuda.is_available() else False
