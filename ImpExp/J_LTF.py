@@ -67,6 +67,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
     def vali(self, vali_data, vali_loader, criterion):
         total_loss = []
+        imp_loss_total = []
+        ds_loss_total = []
         self.imp_model.eval()
         self.model.eval()
         with torch.no_grad():
@@ -114,17 +116,22 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 outputs = outputs[:, -self.args.pred_len:, f_dim:]
                 batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
 
-                x_imp = x_imp.detach().cpu()
-                batch_x_raw = batch_x_raw.detach().cpu()
+                x_imp = x_imp[mask==0].detach().cpu()
+                batch_x_raw = batch_x_raw[mask==0].detach().cpu()
                 pred = outputs.detach().cpu()
                 true = batch_y_raw.detach().cpu()
 
-                loss = criterion(x_imp,batch_x_raw, pred, true)
+                loss, imp_loss, ds_loss = criterion(x_imp,batch_x_raw, pred, true)
 
                 total_loss.append(loss)
+                imp_loss_total.append(imp_loss)
+                ds_loss_total.append(ds_loss)
         total_loss = np.average(total_loss)
+        imp_loss_total = np.average(imp_loss_total)
+        ds_loss_total = np.average(ds_loss_total)
         self.model.train()
-        return total_loss
+        self.imp_model.train()
+        return total_loss, imp_loss_total, ds_loss_total
 
     def train(self, setting):
         
@@ -154,7 +161,6 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             epoch_time = time.time()
             
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(train_loader):
-                breakpoint()
                 iter_count += 1
                 model_optim.zero_grad()
                 batch_x_raw = batch_x_raw.float().to(self.device)
@@ -223,11 +229,13 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
             print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
             train_loss = np.average(train_loss)
-            vali_loss = self.vali(vali_data, vali_loader, criterion)
-            test_loss = self.vali(test_data, test_loader, criterion)
+            vali_loss, vali_loss_imp, vali_loss_ds = self.vali(vali_data, vali_loader, criterion)
+            test_loss, test_loss_imp, test_loss_ds = self.vali(test_data, test_loader, criterion)
 
-            print("Epoch: {0}, Steps: {1} | Train Loss: {2:.7f} Vali Loss: {3:.7f} Test Loss: {4:.7f}".format(
-                epoch + 1, train_steps, train_loss, vali_loss, test_loss))
+            print("Epoch: {0}, Steps: {1} | Train Loss: {2:.7f} Vali Loss: {3:.7f} Test Loss: {4:.7f}".format(epoch + 1, train_steps, train_loss, vali_loss, test_loss))
+            print("Epoch: {0}, Steps: {1} | Vali Imp Loss: {2:.7f} Vali DS Loss: {3:.7f} | Test Imp Loss: {4:.7f} Test DS Loss: {5:.7f}".format(epoch+1,train_steps,
+                                                                                                                                                vali_loss_imp,vali_loss_ds,
+                                                                                                                                                test_loss_imp,test_loss_ds))
             early_stopping(vali_loss, self.imp_model,self.model, path)
             if early_stopping.early_stop:
                 print("Early stopping")
@@ -249,8 +257,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['ds_model'])
 
 
-        raw_list = []
-        imp_list = []
+        imp_mse = []
+        imp_mae = []
         preds = []
         trues = []
         folder_path = './test_results/' + setting + '/'
@@ -259,6 +267,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         self.imp_model.eval()
         self.model.eval()
         with torch.no_grad():
+            mse_fn = nn.MSELoss()
+            mae_fn = nn.L1Loss()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x_raw = batch_x_raw.float().to(self.device)
                 batch_y_raw = batch_y_raw.float().to(self.device)
@@ -303,12 +313,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 outputs = outputs[:, -self.args.pred_len:, :]
                 batch_y_raw = batch_y_raw[:, -self.args.pred_len:, :].to(self.device)
 
-                breakpoint()
-                batch_x_raw = batch_x_raw[mask==0]
-                x_imp = x_imp[mask==0]
+                batch_x_raw = batch_x_raw.detach().cpu()
+                x_imp = x_imp.detach().cpu()
 
-                batch_x_raw = batch_x_raw.detach().cpu().numpy()
-                x_imp = x_imp.detach().cpu().numpy()
                 outputs = outputs.detach().cpu().numpy()
                 batch_y_raw = batch_y_raw.detach().cpu().numpy()
 
@@ -317,21 +324,19 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                     outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
                     batch_y_raw = test_data.inverse_transform(batch_y_raw.squeeze(0)).reshape(shape)
 
-                batch_x_raw = batch_x_raw[:,:, f_dim:]
-                x_imp = x_imp[:,:,f_dim:]
                 outputs = outputs[:, :, f_dim:]
                 batch_y_raw = batch_y_raw[:, :, f_dim:]
-
                 pred = outputs
                 true = batch_y_raw
 
-                raw_list.append(batch_x_raw)
-                imp_list.append(x_imp)
+                imp_mae.append(mae_fn(batch_x_raw[mask==0],x_imp[mask==0]).item())
+                imp_mse.append(mse_fn(batch_x_raw[mask==0],x_imp[mask==0]).item())
+
                 preds.append(pred)
                 trues.append(true)
                 if i % 20 == 0:
-                    raw = batch_x_raw.detach().cpu().numpy()
-                    input = batch_x_imp.detach().cpu().numpy()
+                    raw = batch_x_raw.numpy()
+                    input = x_imp.numpy()
                     if test_data.scale and self.args.inverse:
                         shape = input.shape
                         raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
@@ -347,10 +352,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print('test shape:', preds.shape, trues.shape)
 
-        raw_list = np.array(raw_list)
-        imp_list = np.array(imp_list)
-        raw_list = raw_list.reshape(-1, raw_list.shape[-2],raw_list.shape[-1])
-        imp_list = imp_list.reshape(-1, imp_list.shape[-2],imp_list.shape[-1])
+        # calculate imputaion loss
+        imp_mae = np.mean(imp_mae)
+        imp_mse = np.mean(imp_mse)
         # result save
         folder_path = './results/' + setting + '/'
         if not os.path.exists(folder_path):
@@ -372,16 +376,15 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             dtw = -999
         
         _lambda = self.args._lambda
-        imp_mae, imp_mse, imp_rmse, imp_mape ,imp_mspe = metric(raw_list,imp_list)
         mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('total_mse{}, total_mae{}, imp_mse{}, imp_mae{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
+        print('total_mse:{}, total_mae:{}, imp_mse:{}, imp_mae:{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
                                                                                             _lambda*imp_mae+mae,
                                                                                             imp_mse,
                                                                                             imp_mae,
                                                                                             mse, mae))
         f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
-        f.write('total_mse{}, total_mae{}, imp_mse{}, imp_mae{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
+        f.write('total_mse:{}, total_mae:{}, imp_mse:{}, imp_mae:{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
                                                                                             _lambda*imp_mae+mae,
                                                                                             imp_mse,
                                                                                             imp_mae,
@@ -392,9 +395,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
         np.save(folder_path + 'total_metrics.npy', np.array([ _lambda*imp_mae+mae,
                                                               _lambda*imp_mse+mse, 
-                                                              _lambda*imp_rmse+rmse,
-                                                              _lambda*imp_mape+mape,
-                                                              _lambda*imp_mspe+mspe]))
+                                                              ]))
         np.save(folder_path + 'pred.npy', preds)
         np.save(folder_path + 'true.npy', trues)
 

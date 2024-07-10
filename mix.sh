@@ -4,12 +4,13 @@ model_name=TimesNet
 
 python -u mix_run.py \
   --mask_rate 0.125 \
-  --train_mode 0    \
+  --_lambda 0.5 \
+  --train_mode 1    \
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.25_96_96 \
+  --model_id ETTh1_0.125_96_96_J \
   --lradj cosine \
   --model $model_name \
   --data ETTh1 \
