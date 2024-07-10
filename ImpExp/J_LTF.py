@@ -63,12 +63,11 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         imp_loss_fn = nn.MSELoss()
         ds_ls_fn = nn.MSELoss()
         criterion = joint_loss(self.args._lambda,imp_loss_fn, ds_ls_fn)
-        breakpoint()
         return criterion
 
     def vali(self, vali_data, vali_loader, criterion):
-        
         total_loss = []
+        self.imp_model.eval()
         self.model.eval()
         with torch.no_grad():
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(vali_loader):
@@ -91,10 +90,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
-                # 将batch_x_imp属于label_len部分赋值给batch_y
-                #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
+                # 复制一个用于后续损失计算
+                x_imp = batch_x_imp.clone()             
                 
-
                 ## 预测
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
@@ -114,12 +112,14 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:].to(self.device)
+                batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
 
+                x_imp = x_imp.detach().cpu()
+                batch_x_raw = batch_x_raw.detach().cpu()
                 pred = outputs.detach().cpu()
                 true = batch_y_raw.detach().cpu()
 
-                loss = criterion(pred, true)
+                loss = criterion(x_imp,batch_x_raw, pred, true)
 
                 total_loss.append(loss)
         total_loss = np.average(total_loss)
@@ -145,7 +145,6 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         criterion = self._select_criterion()
         if self.args.use_amp:
             scaler = torch.cuda.amp.GradScaler()
-            
         for epoch in range(self.args.train_epochs):
             iter_count = 0
             train_loss = []
@@ -153,6 +152,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             self.model.train()
             self.imp_model.train()
             epoch_time = time.time()
+            
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(train_loader):
                 breakpoint()
                 iter_count += 1
@@ -245,14 +245,18 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         test_data, test_loader = self._get_data(flag='test')
         if test:
             print('loading model')
-            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
+            self.imp_model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['imp_model'])
+            self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['ds_model'])
 
+
+        raw_list = []
+        imp_list = []
         preds = []
         trues = []
         folder_path = './test_results/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-
+        self.imp_model.eval()
         self.model.eval()
         with torch.no_grad():
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
@@ -275,9 +279,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
-                # 将batch_x_imp属于label_len部分赋值给batch_y
-                #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
-                
+                # 复制一个用于后续损失计算
+                x_imp = batch_x_imp.clone()
+
                 ## 预测
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
@@ -298,6 +302,13 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 f_dim = -1 if self.args.features == 'MS' else 0
                 outputs = outputs[:, -self.args.pred_len:, :]
                 batch_y_raw = batch_y_raw[:, -self.args.pred_len:, :].to(self.device)
+
+                breakpoint()
+                batch_x_raw = batch_x_raw[mask==0]
+                x_imp = x_imp[mask==0]
+
+                batch_x_raw = batch_x_raw.detach().cpu().numpy()
+                x_imp = x_imp.detach().cpu().numpy()
                 outputs = outputs.detach().cpu().numpy()
                 batch_y_raw = batch_y_raw.detach().cpu().numpy()
 
@@ -305,13 +316,17 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                     shape = outputs.shape
                     outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
                     batch_y_raw = test_data.inverse_transform(batch_y_raw.squeeze(0)).reshape(shape)
-        
+
+                batch_x_raw = batch_x_raw[:,:, f_dim:]
+                x_imp = x_imp[:,:,f_dim:]
                 outputs = outputs[:, :, f_dim:]
                 batch_y_raw = batch_y_raw[:, :, f_dim:]
 
                 pred = outputs
                 true = batch_y_raw
 
+                raw_list.append(batch_x_raw)
+                imp_list.append(x_imp)
                 preds.append(pred)
                 trues.append(true)
                 if i % 20 == 0:
@@ -332,6 +347,10 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print('test shape:', preds.shape, trues.shape)
 
+        raw_list = np.array(raw_list)
+        imp_list = np.array(imp_list)
+        raw_list = raw_list.reshape(-1, raw_list.shape[-2],raw_list.shape[-1])
+        imp_list = imp_list.reshape(-1, imp_list.shape[-2],imp_list.shape[-1])
         # result save
         folder_path = './results/' + setting + '/'
         if not os.path.exists(folder_path):
@@ -351,18 +370,31 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             dtw = np.array(dtw_list).mean()
         else:
             dtw = -999
-            
-
+        
+        _lambda = self.args._lambda
+        imp_mae, imp_mse, imp_rmse, imp_mape ,imp_mspe = metric(raw_list,imp_list)
         mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f = open("result_long_term_forecast_imp_i.txt", 'a')
+        print('total_mse{}, total_mae{}, imp_mse{}, imp_mae{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
+                                                                                            _lambda*imp_mae+mae,
+                                                                                            imp_mse,
+                                                                                            imp_mae,
+                                                                                            mse, mae))
+        f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
-        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f.write('total_mse{}, total_mae{}, imp_mse{}, imp_mae{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
+                                                                                            _lambda*imp_mae+mae,
+                                                                                            imp_mse,
+                                                                                            imp_mae,
+                                                                                            mse, mae))
         f.write('\n')
         f.write('\n')
         f.close()
 
-        np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
+        np.save(folder_path + 'total_metrics.npy', np.array([ _lambda*imp_mae+mae,
+                                                              _lambda*imp_mse+mse, 
+                                                              _lambda*imp_rmse+rmse,
+                                                              _lambda*imp_mape+mape,
+                                                              _lambda*imp_mspe+mspe]))
         np.save(folder_path + 'pred.npy', preds)
         np.save(folder_path + 'true.npy', trues)
 
