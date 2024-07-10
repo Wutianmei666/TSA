@@ -1,3 +1,6 @@
 imputation_ETTh1_mask_0.25_Autoformer_ETTh1_ftM_sl96_ll0_pl0_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.06816443055868149, mae:0.17835581302642822
 
+imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.06078845262527466, mae:0.16701912879943848
+

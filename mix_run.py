@@ -130,7 +130,7 @@ if __name__ == '__main__':
     parser.add_argument('--extra_tag', type=str, default="", help="Anything extra")
 
     # 单独训练
-    parser.add_argument('--imp_model_pt', type=str, default="checkpoint.pth")
+    parser.add_argument('--imp_model_pt', type=str, default="checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/Rcheckpoint.pth")
 
 
 

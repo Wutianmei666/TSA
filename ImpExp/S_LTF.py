@@ -131,7 +131,6 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
         model_optim = self._select_optimizer()
         criterion = self._select_criterion()
-
         if self.args.use_amp:
             scaler = torch.cuda.amp.GradScaler()
 
@@ -180,7 +179,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
                         f_dim = -1 if self.args.features == 'MS' else 0
                         outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                        batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:].to(self.device)
+                        batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:]
                         loss = criterion(outputs, batch_y_imp)
                         train_loss.append(loss.item())
                 else:
@@ -189,9 +188,10 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                     else:
                         outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
 
+
                     f_dim = -1 if self.args.features == 'MS' else 0
                     outputs = outputs[:, -self.args.pred_len:, f_dim:]
-                    batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:].to(self.device)
+                    batch_y_imp = batch_y_imp[:, -self.args.pred_len:, f_dim:]
                     loss = criterion(outputs, batch_y_imp)
                     train_loss.append(loss.item())
 
@@ -296,10 +296,10 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                     batch_y_imp = test_data.inverse_transform(batch_y_imp.squeeze(0)).reshape(shape)
         
                 outputs = outputs[:, :, f_dim:]
-                batch_y = batch_y[:, :, f_dim:]
+                batch_y_imp = batch_y_imp[:, :, f_dim:]
 
                 pred = outputs
-                true = batch_y
+                true = batch_y_imp
 
                 preds.append(pred)
                 trues.append(true)
