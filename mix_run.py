@@ -1,6 +1,7 @@
 import argparse
 import torch
 from ImpExp.S_LTF import Exp_Long_Term_Forecast_Imp_I
+from ImpExp.J_LTF import Exp_Long_Term_Forecast_Imp_J
 from utils.print_args import print_args
 import random
 import numpy as np
@@ -132,7 +133,8 @@ if __name__ == '__main__':
     # 单独训练
     parser.add_argument('--imp_model_pt', type=str, default="checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/Rcheckpoint.pth")
 
-
+    # 联合训练
+    parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
     
     args = parser.parse_args()
     # args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
@@ -152,6 +154,8 @@ if __name__ == '__main__':
     if args.task_name == 'long_term_forecast':
         if  args.train_mode == 0:
             Exp = Exp_Long_Term_Forecast_Imp_I
+        else :
+            Exp = Exp_Long_Term_Forecast_Imp_J
     elif args.task_name == 'short_term_forecast':
     #   Exp = Exp_Short_Term_Forecast
         pass
