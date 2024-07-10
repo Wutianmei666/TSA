@@ -55,6 +55,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         return criterion
 
     def vali(self, vali_data, vali_loader, criterion):
+        
         total_loss = []
         self.model.eval()
         with torch.no_grad():
