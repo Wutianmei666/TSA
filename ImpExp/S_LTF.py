@@ -341,7 +341,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f = open("result_long_term_forecast_imp_i.txt", 'a')
         f.write(setting + "  \n")
-        #f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f.write('\n')
         f.write('\n')
         f.close()
