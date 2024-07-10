@@ -3,7 +3,7 @@ export CUDA_VISIBLE_DEVICES=0
 model_name=TimesNet
 
 python -u mix_run.py \
-  --mask_rate 0.25 \
+  --mask_rate 0.125 \
   --train_mode 0    \
   --task_name long_term_forecast \
   --is_training 1 \
