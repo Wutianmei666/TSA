@@ -1,3 +1,15 @@
 long_term_forecast_ETTh1_0.25_96_96_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.39615148305892944, mae:0.41851264238357544, dtw:-999
 
+long_term_forecast_ETTh1_0.125_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.41463592648506165, mae:0.4221694767475128, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.41155216097831726, mae:0.4215715825557709, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.4144637882709503, mae:0.4232332706451416, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.4138105511665344, mae:0.42332062125205994, dtw:-999
+

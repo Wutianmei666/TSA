@@ -1,6 +1,6 @@
 import argparse
 import torch
-from ImpExp.S_LTF import Exp_Long_Term_Forecast_Imp_I
+from ImpExp.I_LTF import Exp_Long_Term_Forecast_Imp_I
 from ImpExp.J_LTF import Exp_Long_Term_Forecast_Imp_J
 from utils.print_args import print_args
 import random

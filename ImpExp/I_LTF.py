@@ -34,6 +34,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         imp_args.task_name = 'imputation'
         imp_args.label_len = 0
         imp_args.pred_len = 0
+        imp_args.d_model = 64
+        imp_args.top_k = 3
         imp_model = self.model_dict[self.args.model].Model(imp_args)
 
         # 装载填补模型权重
@@ -345,7 +347,6 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         f.write('\n')
         f.write('\n')
         f.close()
-
         np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
         np.save(folder_path + 'pred.npy', preds)
         np.save(folder_path + 'true.npy', trues)

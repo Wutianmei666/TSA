@@ -13,3 +13,15 @@ mse:0.09860754758119583, mae:0.2114388793706894
 imputation_ETTh1_mask_0.5_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.1171305701136589, mae:0.22866591811180115
 
+imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.06042102724313736, mae:0.16552293300628662
+
+imputation_ETTh1_mask_0.25_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.0789414644241333, mae:0.1891726553440094
+
+imputation_ETTh1_mask_0.375_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.09384848177433014, mae:0.20722083747386932
+
+imputation_ETTh1_mask_0.5_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.11195887625217438, mae:0.22426699101924896
+
