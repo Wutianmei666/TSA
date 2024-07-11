@@ -2,6 +2,7 @@ import argparse
 import torch
 from ImpExp.I_LTF import Exp_Long_Term_Forecast_Imp_I
 from ImpExp.J_LTF import Exp_Long_Term_Forecast_Imp_J
+from ImpExp.R_LTF import Exp_Long_Term_Forecast_Imp_R
 from utils.print_args import print_args
 import random
 import numpy as np
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', type=str, required=True, default='Autoformer',
                         help='model name, options: [Autoformer, Transformer, TimesNet]')
     parser.add_argument('--train_mode', type=int, required=True, default=0, 
-                        help='train mode, options:[0(Individual),1(Joint)]')
+                        help='train mode, options:[0(Individual),1(Joint),2(NO imputaion model)]')
 
     # data loader
     parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
@@ -154,8 +155,10 @@ if __name__ == '__main__':
     if args.task_name == 'long_term_forecast':
         if  args.train_mode == 0:
             Exp = Exp_Long_Term_Forecast_Imp_I
-        else :
+        elif args.train_mode == 1:
             Exp = Exp_Long_Term_Forecast_Imp_J
+        else:
+            Exp = Exp_Long_Term_Forecast_Imp_R
     elif args.task_name == 'short_term_forecast':
     #   Exp = Exp_Short_Term_Forecast
         pass
