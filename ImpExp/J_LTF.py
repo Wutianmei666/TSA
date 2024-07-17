@@ -34,6 +34,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         super(Exp_Long_Term_Forecast_Imp_J, self).__init__(args)
         self.args = args
         self.imp_model = self._bulid_imputation_model()
+        self._lambda = self._build_lambda()
 
     def _build_model(self):
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -52,19 +53,25 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         imp_model.to(self.device)
         return imp_model
 
+    def _bulid_lambda(self):
+        _lambda = torch.FloatTensor([self.args._lambda])
+        _lambda = nn.Parameter(_lambda, requires_grad=self.args.requires_grad)
+        return _lambda
+    
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
         return data_set, data_loader
 
     def _select_optimizer(self):
         model_optim = optim.Adam([{'params':self.model.parameters()},
-                                  {'params':self.imp_model.parameters()}],lr=self.args.learning_rate)
+                                  {'params':self.imp_model.parameters()},
+                                  {'params':self._lambda}],lr=self.args.learning_rate)
         return model_optim
 
     def _select_criterion(self):
         imp_loss_fn = nn.MSELoss()
         ds_ls_fn = nn.MSELoss()
-        criterion = joint_loss(self.args._lambda,imp_loss_fn, ds_ls_fn)
+        criterion = joint_loss(self._lambda,imp_loss_fn, ds_ls_fn)
         return criterion
 
     def vali(self, vali_data, vali_loader, criterion):
@@ -152,6 +159,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
         model_optim = self._select_optimizer()
         criterion = self._select_criterion()
+        
         if self.args.use_amp:
             scaler = torch.cuda.amp.GradScaler()
         for epoch in range(self.args.train_epochs):
@@ -214,6 +222,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                     train_loss.append(loss.item())
 
                 if (i + 1) % 100 == 0:
+                    print("\tlambda: {0},grad: {1}").format(self._lambda.item(), self._lambda.grad)
                     print("\titers: {0}, epoch: {1} | total_loss: {2:.7f} | imp_loss: {3:.7f} | ds_loss: {4:.7f}".format(i + 1, epoch + 1, loss.item(),imp_loss.item(),ds_loss.item()))
                     speed = (time.time() - time_now) / iter_count
                     left_time = speed * ((self.args.train_epochs - epoch) * train_steps - i)
@@ -228,7 +237,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 else:
                     loss.backward()
                     model_optim.step()
-
+            breakpoint()
             print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
             train_loss = np.average(train_loss)
             vali_loss, vali_loss_imp, vali_loss_ds = self.vali(vali_data, vali_loader, criterion)
