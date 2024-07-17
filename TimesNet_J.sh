@@ -6,7 +6,7 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 1 \
   --mask_rate 0.125 \
-  --_lambda 0.5 \
+  --_lambda 1 \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \

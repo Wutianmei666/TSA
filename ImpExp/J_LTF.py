@@ -53,8 +53,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         imp_model.to(self.device)
         return imp_model
 
-    def _bulid_lambda(self):
-        _lambda = torch.FloatTensor([self.args._lambda])
+    def _build_lambda(self):
+        _lambda = torch.FloatTensor([self.args._lambda]).to(self.device)
         _lambda = nn.Parameter(_lambda, requires_grad=self.args.requires_grad)
         return _lambda
     
@@ -132,9 +132,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
                 loss, imp_loss, ds_loss = criterion(x_imp,batch_x_raw, pred, true)
 
-                total_loss.append(loss)
-                imp_loss_total.append(imp_loss)
-                ds_loss_total.append(ds_loss)
+                total_loss.append(loss.detach().cpu().item())
+                imp_loss_total.append(imp_loss.detach().cpu().item())
+                ds_loss_total.append(ds_loss.detach().cpu().item())
         total_loss = np.average(total_loss)
         imp_loss_total = np.average(imp_loss_total)
         ds_loss_total = np.average(ds_loss_total)
@@ -222,8 +222,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                     train_loss.append(loss.item())
 
                 if (i + 1) % 100 == 0:
-                    print("\tlambda: {0},grad: {1}").format(self._lambda.item(), self._lambda.grad)
-                    print("\titers: {0}, epoch: {1} | total_loss: {2:.7f} | imp_loss: {3:.7f} | ds_loss: {4:.7f}".format(i + 1, epoch + 1, loss.item(),imp_loss.item(),ds_loss.item()))
+                    print("\titers: {0}, epoch: {1} | lambda: {2:.7f} | total_loss: {3:.7f} | imp_loss: {4:.7f} | ds_loss: {5:.7f}".format(i + 1, epoch + 1, self._lambda.item(), 
+                                                                                                                                            loss.item(),imp_loss.item(),ds_loss.item()))
                     speed = (time.time() - time_now) / iter_count
                     left_time = speed * ((self.args.train_epochs - epoch) * train_steps - i)
                     print('\tspeed: {:.4f}s/iter; left time: {:.4f}s'.format(speed, left_time))
@@ -237,7 +237,6 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                 else:
                     loss.backward()
                     model_optim.step()
-            breakpoint()
             print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
             train_loss = np.average(train_loss)
             vali_loss, vali_loss_imp, vali_loss_ds = self.vali(vali_data, vali_loader, criterion)
@@ -395,6 +394,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                                                                                             mse, mae))
         f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
+        f.write('initial lr:{}, lambda:{}, lradj:{}'.format(self.args.learning_rate, self._lambda.item(), self.args.lradj))
         f.write('total_mse:{}, total_mae:{}, imp_mse:{}, imp_mae:{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
                                                                                             _lambda*imp_mae+mae,
                                                                                             imp_mse,

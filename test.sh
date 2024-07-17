@@ -11,7 +11,7 @@ python -u mix_run.py \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.125_96_96_J \
+  --model_id ETTh1_0.125_96_96_J_L \
   --model $model_name \
   --data ETTh1 \
   --features M \
