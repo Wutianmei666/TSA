@@ -6,10 +6,11 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 2 \
   --mask_rate 0.125 \
+  --interpolate no \
   --is_training 1 \
+  --model_id ETTh1_0.125_96_96_R_no \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.125_96_96_R \
   --model $model_name \
   --data ETTh1 \
   --features M \
@@ -28,14 +29,15 @@ python -u mix_run.py \
   --itr 1 \
   --top_k 5 
 
-  python -u mix_run.py \
+python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 2 \
   --mask_rate 0.25 \
+  --interpolate no \
   --is_training 1 \
+  --model_id ETTh1_0.25_96_96_R_no \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.25_96_96_R \
   --model $model_name \
   --data ETTh1 \
   --features M \
@@ -54,14 +56,15 @@ python -u mix_run.py \
   --itr 1 \
   --top_k 5 
 
-  python -u mix_run.py \
+python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 2 \
   --mask_rate 0.375 \
+  --interpolate no \
   --is_training 1 \
+  --model_id ETTh1_0.375_96_96_R_no \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.375_96_96_R \
   --model $model_name \
   --data ETTh1 \
   --features M \
@@ -80,14 +83,15 @@ python -u mix_run.py \
   --itr 1 \
   --top_k 5 
 
-  python -u mix_run.py \
+python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 2 \
   --mask_rate 0.5 \
+  --interpolate no \
   --is_training 1 \
+  --model_id ETTh1_0.5_96_96_R_no \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.5_96_96_R \
   --model $model_name \
   --data ETTh1 \
   --features M \

@@ -7,6 +7,7 @@ import torch.nn as nn
 from torch import optim
 import os
 import time
+from scipy.interpolate import interp1d
 import warnings
 import numpy as np
 from utils.dtw_metric import dtw,accelerated_dtw
@@ -14,6 +15,24 @@ from utils.augmentation import run_augmentation,run_augmentation_single
 
 warnings.filterwarnings('ignore')
 
+# 对mask后的tensor进行插值。interp1d()函数的kind参数决定了插值方法：nearest(最近邻)、linear(线性)
+def interpolate(tensor,device,kind):
+    tensor = tensor.cpu()
+    B, T, N = tensor.shape
+    filled_tensor = torch.zeros_like(tensor)
+    
+    for b in range(B):
+        for n in range(N):
+            data = tensor[b, :, n].numpy()
+            mask = data != 0
+            if np.any(mask):
+                indices = np.arange(T)
+                interp_func = interp1d(indices[mask], data[mask], bounds_error=False, fill_value="extrapolate",kind=kind)
+                filled_tensor[b, :, n] = torch.tensor(interp_func(indices))
+            else:
+                filled_tensor[b, :, n] = torch.tensor(data)  # No non-zero data to interpolate
+
+    return filled_tensor.to(device)
 
 class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
     def __init__(self, args):
@@ -39,6 +58,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         criterion = nn.MSELoss()
         return criterion
 
+
     def vali(self, vali_data, vali_loader, criterion):
         total_loss = []
         self.model.eval()
@@ -61,7 +81,8 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
-
+                if self.args.interpolate != 'no':
+                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -137,7 +158,8 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
-
+                if self.args.interpolate != 'no':
+                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -235,7 +257,8 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
-
+                if self.args.interpolate != 'no':
+                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -314,6 +337,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f = open("result_long_term_forecast.txt", 'a')
         f.write(setting + "  \n")
+        f.write('(use {} interpolate method to imputate data after mask)\n'.format(self.args.interpolate))
         f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f.write('\n')
         f.write('\n')

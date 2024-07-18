@@ -1,6 +1,6 @@
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
-from utils.tools import EarlyStopping_J, adjust_learning_rate, visual
+from utils.tools import EarlyStopping_J, adjust_learning_rate_J, visual
 from utils.metrics import metric
 import torch
 import torch.nn as nn
@@ -64,8 +64,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
     def _select_optimizer(self):
         model_optim = optim.Adam([{'params':self.model.parameters()},
-                                  {'params':self.imp_model.parameters()},
-                                  {'params':self._lambda}],lr=self.args.learning_rate)
+                                  {'params':self.imp_model.parameters(),'lr':self.args.imp_lr}
+                                  # {'params':self._lambda,'lr':0.001}
+                                  ],lr=self.args.learning_rate)
         return model_optim
 
     def _select_criterion(self):
@@ -246,12 +247,12 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             print("Epoch: {0}, Steps: {1} | Vali Imp Loss: {2:.7f} Vali DS Loss: {3:.7f} | Test Imp Loss: {4:.7f} Test DS Loss: {5:.7f}".format(epoch+1,train_steps,
                                                                                                                                                 vali_loss_imp,vali_loss_ds,
                                                                                                                                                 test_loss_imp,test_loss_ds))
-            early_stopping(vali_loss, self.imp_model,self.model, path)
+            early_stopping(vali_loss_ds, self.imp_model,self.model, path)
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
 
-            adjust_learning_rate(model_optim, epoch + 1, self.args)
+            adjust_learning_rate_J(model_optim, epoch + 1, self.args)
 
         best_model_path = path + '/' + 'checkpoint.pth'
         self.imp_model.load_state_dict(torch.load(best_model_path)['imp_model'])
@@ -394,7 +395,13 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                                                                                             mse, mae))
         f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
-        f.write('initial lr:{}, lambda:{}, lradj:{}'.format(self.args.learning_rate, self._lambda.item(), self.args.lradj))
+
+        f.write('(initial lr:{}, initial imp lr: {} lambda:{}({}), lradj:{})\n'.format(self.args.learning_rate, 
+                                                                                    self.args.imp_lr,
+                                                                                    self._lambda.item(), 
+                                                                                    'Fix' if self.args.requires_grad == False else 'Trainable',
+                                                                                    self.args.lradj))
+
         f.write('total_mse:{}, total_mae:{}, imp_mse:{}, imp_mae:{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
                                                                                             _lambda*imp_mae+mae,
                                                                                             imp_mse,

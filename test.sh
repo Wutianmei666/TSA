@@ -4,14 +4,15 @@ model_name=TimesNet
 
 python -u mix_run.py \
   --task_name long_term_forecast \
-  --train_mode 1 \
+  --train_mode 2 \
   --mask_rate 0.125 \
-  --_lambda 0.5 \
-  --requires_grad True \
+  --interpolate nearest \
+  --requires_grad False \
   --is_training 1 \
+  --batch_size 2 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_0.125_96_96_J_L \
+  --model_id ETTh1_0.125_96_96_R \
   --model $model_name \
   --data ETTh1 \
   --features M \

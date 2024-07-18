@@ -25,13 +25,16 @@ if __name__ == '__main__':
     parser.add_argument('--train_mode', type=int, required=True, default=0, 
                         help='train mode, options:[0(Individual),1(Joint),2(NO imputaion model)]')
     
+    # 不填补直接下游
+    parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,nearest,linear]')
+
     # 单独训练
     parser.add_argument('--imp_model_pt', type=str, default="checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/Rcheckpoint.pth")
 
     # 联合训练
     parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
-    parser.add_argument('--requires_grad',type=bool,required=True,default=False,help='set lambda as a trainable paarameter')
-    
+    parser.add_argument('--requires_grad',type=bool,required=False,default=False,help='set lambda as a trainable paarameter')
+    parser.add_argument('--imp_lr',type=float, default=0.001,help='initial learning rate for imputation model')
     # data loader
     parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
     parser.add_argument('--root_path', type=str, default='./data/ETT/', help='root path of the data file')

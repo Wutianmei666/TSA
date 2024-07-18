@@ -27,7 +27,16 @@ def adjust_learning_rate(optimizer, epoch, args):
             param_group['lr'] = lr
         print('Updating learning rate to {}'.format(lr))
 
-
+def adjust_learning_rate_J(optimizer, epoch, args):
+    assert args.lradj == 'type1' or args.lradj == "cosine"
+    for param_group in optimizer.param_groups:
+        if args.lradj == 'type1':
+            param_group['lr'] = param_group['lr'] * (0.5 ** ((epoch - 1) // 1))
+            print(param_group['lr'])
+        else :
+            param_group['lr'] = param_group['lr'] /2 * (1 + math.cos(epoch / args.train_epochs * math.pi))
+            print(param_group['lr'])
+            
 class EarlyStopping:
     def __init__(self, patience=7, verbose=False, delta=0):
         self.patience = patience

@@ -6,7 +6,9 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 1 \
   --mask_rate 0.125 \
-  --_lambda 1 \
+  --_lambda 0 \
+  --requires_grad False\
+  --imp_lr 0.001 \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
@@ -33,7 +35,9 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 1 \
   --mask_rate 0.25 \
-  --_lambda 0.5 \
+  --_lambda 0 \
+  --requires_grad False\
+  --imp_lr 0.001 \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
@@ -60,7 +64,9 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 1 \
   --mask_rate 0.375 \
-  --_lambda 0.5 \
+  --_lambda 0 \
+  --requires_grad False\
+  --imp_lr 0.001 \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
@@ -87,7 +93,9 @@ python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 1 \
   --mask_rate 0.5 \
-  --_lambda 0.5 \
+  --_lambda 0 \
+  --requires_grad False\
+  --imp_lr 0.001 \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
