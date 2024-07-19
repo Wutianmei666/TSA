@@ -33,8 +33,9 @@ if __name__ == '__main__':
 
     # 联合训练
     parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
-    parser.add_argument('--requires_grad',type=bool,required=False,default=False,help='set lambda as a trainable paarameter')
+    parser.add_argument('--requires_grad',default=False, action='store_true', help='set lambda as a trainable paarameter')
     parser.add_argument('--imp_lr',type=float, default=0.001,help='initial learning rate for imputation model')
+
     # data loader
     parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
     parser.add_argument('--root_path', type=str, default='./data/ETT/', help='root path of the data file')

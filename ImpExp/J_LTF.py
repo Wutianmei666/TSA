@@ -63,11 +63,20 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         return data_set, data_loader
 
     def _select_optimizer(self):
-        model_optim = optim.Adam([{'params':self.model.parameters()},
-                                  {'params':self.imp_model.parameters(),'lr':self.args.imp_lr}
-                                  # {'params':self._lambda,'lr':0.001}
-                                  ],lr=self.args.learning_rate)
+        if self.args.requires_grad == False:
+            model_optim = optim.Adam([{'params':self.model.parameters()},
+                                    {'params':self.imp_model.parameters(),'lr':self.args.imp_lr}],
+                                    lr=self.args.learning_rate)
+        else:
+            model_optim = optim.Adam([{'params':self.model.parameters()},
+                                    {'params':self.imp_model.parameters(),'lr':self.args.imp_lr},
+                                    {'params':self._lambda,'lr':0.01}],
+                                    lr=self.args.learning_rate)
         return model_optim
+
+
+
+
 
     def _select_criterion(self):
         imp_loss_fn = nn.MSELoss()
