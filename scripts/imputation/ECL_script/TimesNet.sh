@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=0
 
 model_name=TimesNet
 
@@ -22,7 +22,7 @@ python -u run.py \
   --dec_in 321 \
   --c_out 321 \
   --batch_size 16 \
-  --d_model 64 \
+  --d_model 128 \
   --d_ff 64 \
   --des 'Exp' \
   --itr 1 \
@@ -49,7 +49,7 @@ python -u run.py \
   --dec_in 321 \
   --c_out 321 \
   --batch_size 16 \
-  --d_model 64 \
+  --d_model 128 \
   --d_ff 64 \
   --des 'Exp' \
   --itr 1 \
@@ -76,7 +76,7 @@ python -u run.py \
   --dec_in 321 \
   --c_out 321 \
   --batch_size 16 \
-  --d_model 64 \
+  --d_model 128 \
   --d_ff 64 \
   --des 'Exp' \
   --itr 1 \
@@ -103,7 +103,7 @@ python -u run.py \
   --dec_in 321 \
   --c_out 321 \
   --batch_size 16 \
-  --d_model 64 \
+  --d_model 128 \
   --d_ff 64 \
   --des 'Exp' \
   --itr 1 \

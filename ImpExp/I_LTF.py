@@ -34,7 +34,9 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         imp_args.task_name = 'imputation'
         imp_args.label_len = 0
         imp_args.pred_len = 0
-        imp_args.d_model = 64
+        # 注意修改
+        imp_args.d_model = 128
+        imp_args.d_ff = 64
         imp_args.top_k = 3
         imp_model = self.model_dict[self.args.model].Model(imp_args)
 
