@@ -1,5 +1,6 @@
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
+from utils.imp_args import _make_imp_args
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.metrics import metric
 import torch
@@ -30,18 +31,11 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         return model
 
     def _bulid_imputation_model(self):
-        imp_args = copy.deepcopy(self.args)
-        imp_args.task_name = 'imputation'
-        imp_args.label_len = 0
-        imp_args.pred_len = 0
-        # 注意修改
-        imp_args.d_model = 64
-        imp_args.d_ff = 64
-        imp_args.top_k = 3
-        imp_model = self.model_dict[self.args.model].Model(imp_args)
+        imp_args, weight_path = _make_imp_args(self.args)
+        imp_model = self.model_dict[imp_args.model].Model(imp_args)
 
         # 装载填补模型权重
-        imp_model.load_state_dict(torch.load(self.args.imp_model_pt))
+        imp_model.load_state_dict(torch.load(weight_path))
         imp_model.to("cuda")
         imp_model.eval()
         return imp_model

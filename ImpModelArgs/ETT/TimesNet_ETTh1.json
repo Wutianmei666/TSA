@@ -1,0 +1,16 @@
+{
+    "config":{
+        "model":"TimesNet",
+        "e_layers":2,
+        "d_layers":1,
+        "d_model": 64,
+        "d_ff": 32,
+        "top_k": 3
+    },
+    "weight_path":{
+        "0.125":"",
+        "0.25":"",
+        "0.375":"",
+        "0.5":""
+    }
+}
