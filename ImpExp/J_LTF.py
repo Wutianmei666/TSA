@@ -50,7 +50,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         imp_args.label_len = 0
         imp_args.pred_len = 0
         # 注意修改
-        imp_args.d_model = 128
+        imp_args.d_model = 64
         imp_args.d_ff = 64
         imp_args.top_k = 3
         imp_model = self.model_dict[self.args.model].Model(imp_args)
@@ -74,7 +74,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         else:
             model_optim = optim.Adam([{'params':self.model.parameters()},
                                     {'params':self.imp_model.parameters(),'lr':self.args.imp_lr},
-                                    {'params':self._lambda,'lr':0.1}],
+                                    {'params':self._lambda,'lr':0.01}],
                                     lr=self.args.learning_rate)
         return model_optim
 
@@ -218,6 +218,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                         f_dim = -1 if self.args.features == 'MS' else 0
                         outputs = outputs[:, -self.args.pred_len:, f_dim:]
                         batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
+                        # 将lambda限制在大于0 
+                        if self.args.requires_grad :
+                            self._lambda.data = self.activate_fn(self._lambda)
                         loss, imp_loss, ds_loss = criterion(x_imp[mask==0],batch_x_raw[mask==0],outputs, batch_y_raw)
                         train_loss.append(loss.item())
                 else:

@@ -10,3 +10,17 @@ mse:0.4144637882709503, mae:0.4232332706451416, dtw:-999
 long_term_forecast_ETTh1_0.5_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.4138105511665344, mae:0.42332062125205994, dtw:-999
 
+# 7.28 MICN实验
+
+long_term_forecast_ETTh1_0.125_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.3947834372520447, mae:0.4268544912338257, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.392717570066452, mae:0.4261385500431061, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.3942170739173889, mae:0.42876142263412476, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.4183957278728485, mae:0.4413371682167053, dtw:-999
+
