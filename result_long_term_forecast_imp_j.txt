@@ -207,7 +207,68 @@ long_term_forecast_ETTh1_0.5_96_96_J_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2
 (initial lr:0.001, initial imp lr: 0.001 lambda:-0.00015524154878221452(Trainable), lradj:type1)
 total_mse:0.8462517865259072, total_mae:0.9247407548386475, imp_mse:0.4445966191846749, imp_mae:0.48908343243187874, ds_mse:0.4016551673412323, ds_mae:0.4356573224067688
 
+# 7.29 TimesNet_Transformer
+long_term_forecast_ETTh1_0.125_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.0(Fix), lradj:type1)
+ds_mse:0.926542341709137, ds_mae:0.7733938694000244, imp_mse:1.7650486352457397, imp_mae:0.9076879731882578, total_mse:0.926542341709137, total_mae:0.7733938694000244
 
+long_term_forecast_ETTh1_0.25_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.0(Fix), lradj:type1)
+ds_mse:0.890454113483429, ds_mae:0.7519822120666504, imp_mse:1.0358949807183495, imp_mae:0.6912188413499416, total_mse:0.890454113483429, total_mae:0.7519822120666504
 
+long_term_forecast_ETTh1_0.375_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.0(Fix), lradj:type1)
+ds_mse:0.9482701420783997, ds_mae:0.7866300344467163, imp_mse:0.9061228197881546, imp_mae:0.6296789897926922, total_mse:0.9482701420783997, total_mae:0.7866300344467163
 
+long_term_forecast_ETTh1_0.5_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.0(Fix), lradj:type1)
+ds_mse:0.8512640595436096, ds_mae:0.7298740148544312, imp_mse:0.7345917999059305, imp_mae:0.5788954004816625, total_mse:0.8512640595436096, total_mae:0.7298740148544312
+
+long_term_forecast_ETTh1_0.125_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:type1)
+ds_mse:0.9552923440933228, ds_mae:0.7883853912353516, imp_mse:0.07224966208825166, imp_mae:0.18127671928926445, total_mse:0.9914171751374485, total_mae:0.8790237508799837
+
+long_term_forecast_ETTh1_0.25_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:type1)
+ds_mse:0.9376336336135864, ds_mae:0.7784450650215149, imp_mse:0.09503065976688917, imp_mae:0.20853464373911934, total_mse:0.985148963497031, total_mae:0.8827123868910746
+
+long_term_forecast_ETTh1_0.375_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:type1)
+ds_mse:0.9388248920440674, ds_mae:0.7625230550765991, imp_mse:0.11286300583474937, imp_mae:0.228354152077916, total_mse:0.995256394961442, total_mae:0.8767001311155571
+
+long_term_forecast_ETTh1_0.5_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:type1)
+ds_mse:0.9343913197517395, ds_mae:0.7752417325973511, imp_mse:0.14138997667308512, imp_mae:0.25194013966568585, total_mse:1.0050863080882821, total_mae:0.901211802430194
+
+long_term_forecast_ETTh1_0.125_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:type1)
+ds_mse:0.9497588276863098, ds_mae:0.7855698466300964, imp_mse:0.06991031198580375, imp_mae:0.17759128664245552, total_mse:1.0196691396721136, total_mae:0.9631611332725519
+
+long_term_forecast_ETTh1_0.25_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:type1)
+ds_mse:0.9270114898681641, ds_mae:0.7744544744491577, imp_mse:0.08954560604674378, imp_mae:0.20128080343035445, total_mse:1.0165570959149077, total_mae:0.9757352778795122
+
+long_term_forecast_ETTh1_0.375_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:type1)
+ds_mse:0.9250155091285706, ds_mae:0.7615471482276917, imp_mse:0.10835658638984308, imp_mae:0.22166934909149147, total_mse:1.0333720955184136, total_mae:0.9832164973191831
+
+long_term_forecast_ETTh1_0.5_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:type1)
+ds_mse:0.9333816766738892, ds_mae:0.77511066198349, imp_mse:0.13029400081555734, imp_mae:0.24406338654372883, total_mse:1.0636756774894465, total_mae:1.0191740485272187
+
+long_term_forecast_ETTh1_0.125_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:-0.0011631340021267533(Trainable), lradj:type1)
+ds_mse:0.9220806360244751, ds_mae:0.7662418484687805, imp_mse:0.7469964308728432, imp_mae:0.5801949336610991, total_mse:1.6690770668973183, total_mae:1.3464367821298797
+
+long_term_forecast_ETTh1_0.25_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:-0.0011750557459890842(Trainable), lradj:type1)
+ds_mse:0.8824958801269531, ds_mae:0.7456871271133423, imp_mse:0.709673516109757, imp_mae:0.5792495476445932, total_mse:1.5921693962367103, total_mae:1.3249366747579354
+
+long_term_forecast_ETTh1_0.375_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:-0.0012330588651821017(Trainable), lradj:type1)
+ds_mse:0.8997348546981812, ds_mae:0.7563210129737854, imp_mse:0.7895804582827393, imp_mae:0.623182121193272, total_mse:1.6893153129809204, total_mae:1.3795031341670574
+
+long_term_forecast_ETTh1_0.5_96_96_J_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:-0.0012972201220691204(Trainable), lradj:type1)
+ds_mse:0.9344062805175781, ds_mae:0.7806045413017273, imp_mse:0.8010303933901348, imp_mae:0.6125763533101685, total_mse:1.735436673907713, total_mae:1.3931808946118958
 

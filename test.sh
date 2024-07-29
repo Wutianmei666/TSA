@@ -1,29 +1,113 @@
-export CUDA_VISIBLE_DEVICES=0
+eexport CUDA_VISIBLE_DEVICES=0
 
-model_name=Transformer
+model_name=TimesNet
 
-python -u mix_run.py \
-  --task_name long_term_forecast \
-  --train_mode 0 \
-  --mask_rate 0.125 \
-  --imp_args_json ImpModelArgs/ETT/TimesNet_ETTh1.json \
-  --learning_rate 0.001 \
-  --is_training 1 \
+python -u run.py \
+  --task_name imputation \
+  --is_training 0 \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
-  --model_id ETTh1_96_96 \
+  --model_id ETTh1_mask_0.125 \
+  --mask_rate 0.125 \
   --model $model_name \
   --data ETTh1 \
   --features M \
   --seq_len 96 \
-  --label_len 48 \
-  --pred_len 96 \
+  --label_len 0 \
+  --pred_len 0 \
   --e_layers 2 \
   --d_layers 1 \
   --factor 3 \
   --enc_in 7 \
   --dec_in 7 \
   --c_out 7 \
+  --batch_size 16 \
+  --d_model 64 \
+  --d_ff 32 \
   --des 'Exp' \
-  --itr 1
+  --itr 1 \
+  --top_k 3 \
+  --learning_rate 0.001
+
+python -u run.py \
+  --task_name imputation \
+  --is_training 0 \
+  --root_path ./dataset/ETT-small/ \
+  --data_path ETTh1.csv \
+  --model_id ETTh1_mask_0.25 \
+  --mask_rate 0.25 \
+  --model $model_name \
+  --data ETTh1 \
+  --features M \
+  --seq_len 96 \
+  --label_len 0 \
+  --pred_len 0 \
+  --e_layers 2 \
+  --d_layers 1 \
+  --factor 3 \
+  --enc_in 7 \
+  --dec_in 7 \
+  --c_out 7 \
+  --batch_size 16 \
+  --d_model 64 \
+  --d_ff 32 \
+  --des 'Exp' \
+  --itr 1 \
+  --top_k 3 \
+  --learning_rate 0.001
+
+python -u run.py \
+  --task_name imputation \
+  --is_training 0 \
+  --root_path ./dataset/ETT-small/ \
+  --data_path ETTh1.csv \
+  --model_id ETTh1_mask_0.375 \
+  --mask_rate 0.375 \
+  --model $model_name \
+  --data ETTh1 \
+  --features M \
+  --seq_len 96 \
+  --label_len 0 \
+  --pred_len 0 \
+  --e_layers 2 \
+  --d_layers 1 \
+  --factor 3 \
+  --enc_in 7 \
+  --dec_in 7 \
+  --c_out 7 \
+  --batch_size 16 \
+  --d_model 64 \
+  --d_ff 32 \
+  --des 'Exp' \
+  --itr 1 \
+  --top_k 3 \
+  --learning_rate 0.001
+
+python -u run.py \
+  --task_name imputation \
+  --is_training 0 \
+  --root_path ./dataset/ETT-small/ \
+  --data_path ETTh1.csv \
+  --model_id ETTh1_mask_0.5 \
+  --mask_rate 0.5 \
+  --model $model_name \
+  --data ETTh1 \
+  --features M \
+  --seq_len 96 \
+  --label_len 0 \
+  --pred_len 0 \
+  --e_layers 2 \
+  --d_layers 1 \
+  --factor 3 \
+  --enc_in 7 \
+  --dec_in 7 \
+  --c_out 7 \
+  --batch_size 16 \
+  --d_model 64 \
+  --d_ff 32 \
+  --des 'Exp' \
+  --itr 1 \
+  --top_k 3 \
+  --learning_rate 0.001
+
 

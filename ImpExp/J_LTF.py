@@ -1,6 +1,7 @@
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
 from utils.tools import EarlyStopping_J, adjust_learning_rate_J, visual
+from utils.imp_args import _make_imp_args
 from utils.metrics import metric
 import torch
 import torch.nn as nn
@@ -34,7 +35,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_J, self).__init__(args)
         self.args = args
-        self.imp_model = self._bulid_imputation_model()
+        self.imp_model, self.imp_model_name = self._bulid_imputation_model()
+        print("Using {} to imputate data".format(self.imp_model_name))
+
         self._lambda = self._build_lambda()
         self.activate_fn = nn.ReLU()
 
@@ -45,17 +48,10 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         return model
 
     def _bulid_imputation_model(self):
-        imp_args = copy.deepcopy(self.args)
-        imp_args.task_name = 'imputation'
-        imp_args.label_len = 0
-        imp_args.pred_len = 0
-        # 注意修改
-        imp_args.d_model = 64
-        imp_args.d_ff = 64
-        imp_args.top_k = 3
-        imp_model = self.model_dict[self.args.model].Model(imp_args)
+        imp_args, weight_path = _make_imp_args(self.args)
+        imp_model = self.model_dict[imp_args.model].Model(imp_args)
         imp_model.to(self.device)
-        return imp_model
+        return imp_model, imp_args.model
 
     def _build_lambda(self):
         _lambda = torch.FloatTensor([self.args._lambda]).to(self.device)
@@ -413,25 +409,28 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
 
-        f.write('(initial lr:{}, initial imp lr: {} lambda:{}({}), lradj:{})\n'.format(self.args.learning_rate, 
-                                                                                    self.args.imp_lr,
-                                                                                    self._lambda.item(), 
-                                                                                    'Fix' if self.args.requires_grad == False else 'Trainable',
-                                                                                    self.args.lradj))
+        f.write('(imp_model:{}, initial lr:{}, initial imp lr: {} lambda:{}({}), lradj:{})\n'.format(self.imp_model_name,
+                                                                                                    self.args.learning_rate, 
+                                                                                                    self.args.imp_lr,
+                                                                                                    self._lambda.item(), 
+                                                                                                    'Fix' if self.args.requires_grad == False else 'Trainable',
+                                                                                                    self.args.lradj))
 
-        f.write('total_mse:{}, total_mae:{}, imp_mse:{}, imp_mae:{}, ds_mse:{}, ds_mae:{}'.format(_lambda*imp_mse+mse,
-                                                                                            _lambda*imp_mae+mae,
-                                                                                            imp_mse,
-                                                                                            imp_mae,
-                                                                                            mse, mae))
+        f.write('ds_mse:{}, ds_mae:{}, imp_mse:{}, imp_mae:{}, total_mse:{}, total_mae:{}'.format(mse, 
+                                                                                                  mae,
+                                                                                                  imp_mse,
+                                                                                                  imp_mae,
+                                                                                                  _lambda*imp_mse+mse,
+                                                                                                  _lambda*imp_mae+mae,
+                                                                                                    ))
         f.write('\n')
         f.write('\n')
         f.close()
 
-        np.save(folder_path + 'total_metrics.npy', np.array([ _lambda*imp_mae+mae,
-                                                              _lambda*imp_mse+mse, 
-                                                              ]))
-        np.save(folder_path + 'pred.npy', preds)
-        np.save(folder_path + 'true.npy', trues)
+        # np.save(folder_path + 'total_metrics.npy', np.array([ _lambda*imp_mae+mae,
+        #                                                       _lambda*imp_mse+mse, 
+        #                                                       ]))
+        # np.save(folder_path + 'pred.npy', preds)
+        # np.save(folder_path + 'true.npy', trues)
 
         return

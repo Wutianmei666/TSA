@@ -64,3 +64,16 @@ mse:0.14006271958351135, mae:0.268248587846756
 imputation_ETTh1_mask_0.5_MICN_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.18044018745422363, mae:0.3062203526496887
 
+# 7.29 Transformer ETTh1数据集填补 
+imputation_ETTh1_mask_0.125_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.06460568308830261, mae:0.17988961935043335
+
+imputation_ETTh1_mask_0.25_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.08681019395589828, mae:0.20929017663002014
+
+imputation_ETTh1_mask_0.375_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.11228576302528381, mae:0.23641976714134216
+
+imputation_ETTh1_mask_0.5_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.1352030634880066, mae:0.26338624954223633
+

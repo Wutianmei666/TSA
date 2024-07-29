@@ -21,8 +21,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_I, self).__init__(args)
         self.args = args
-        # breakpoint()
         self.imp_model, self.imp_model_name = self._bulid_imputation_model()
+        print("Using {} to imputate data".format(self.imp_model_name))
 
     def _build_model(self):
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -340,6 +340,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f = open("result_long_term_forecast_imp_i.txt", 'a')
         f.write(setting + "  \n")
+        f.write("Use {} to imputate data \n".format(self.imp_model_name))
         f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f.write('\n')
         f.write('\n')
