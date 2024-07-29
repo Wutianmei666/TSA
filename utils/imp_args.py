@@ -10,9 +10,10 @@ def _make_imp_args(ds_args):
 
         # 通过json文件获取填补模型参数
         with open(imp_args.imp_args_json, 'r') as f:
-            config = json.load(f)["config"]
+            data = json.load(f)
+            config = data["config"]
             # 获取单独训练的填补模型权重
-            weight_paths = json.load(f)["weight_path"]
+            weight_paths = data["weight_path"]
 
         # 读取参数
         for key, value in config.items():
