@@ -26,7 +26,7 @@ if __name__ == '__main__':
                         help='train mode, options:[0(Individual),1(Joint),2(NO imputaion model)]')
     
     # 不填补直接下游
-    parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,nearest,linear]')
+    parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,mean,nearest,linear]')
 
     # 填补模型参数json文件
     # parser.add_argument('imp_model',type=str,default="TimesNet",help="name of the imputation model")
