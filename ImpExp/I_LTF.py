@@ -21,7 +21,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_I, self).__init__(args)
         self.args = args
-        self.imp_model = self._bulid_imputation_model()
+        # breakpoint()
+        self.imp_model, self.imp_model_name = self._bulid_imputation_model()
 
     def _build_model(self):
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -38,7 +39,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         imp_model.load_state_dict(torch.load(weight_path))
         imp_model.to("cuda")
         imp_model.eval()
-        return imp_model
+        return imp_model, imp_args.model
 
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)

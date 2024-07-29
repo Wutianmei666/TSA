@@ -7,9 +7,9 @@ def _make_imp_args(ds_args):
         imp_args.task_name ='imputation'
         imp_args.label_len = 0
         imp_args.pred_len = 0
-
+        breakpoint()
         # 通过json文件获取填补模型参数
-        with open(imp_args.imp_args_json, 'r') as f:
+        with open(imp_args.imp_args_json, 'r',encoding='utf-8') as f:
             config = json.load(f)["config"]
             # 获取单独训练的填补模型权重
             weight_paths = json.load(f)["weight_path"]

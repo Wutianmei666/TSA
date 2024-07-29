@@ -7,10 +7,10 @@
         "d_ff": 32,
         "top_k": 3
     },
-    "weight_path":{
-        "0.125":"",
-        "0.25":"",
-        "0.375":"",
-        "0.5":""
+    "weight_path": {
+        "0.125": "checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.25": "checkpoints/imputation_ETTh1_mask_0.25_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.375": "checkpoints/imputation_ETTh1_mask_0.375_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.5": "checkpoints/imputation_ETTh1_mask_0.5_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth"
     }
 }

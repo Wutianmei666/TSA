@@ -2,7 +2,7 @@ export CUDA_VISIBLE_DEVICES=0
 
 model_name=Transformer
 
-python -u run.py \
+python -u mix_run.py \
   --task_name long_term_forecast \
   --train_mode 0 \
   --mask_rate 0.125 \

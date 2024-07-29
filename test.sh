@@ -1,18 +1,19 @@
 export CUDA_VISIBLE_DEVICES=0
 
-model_name=TimesNet
+model_name=Transformer
 
 python -u mix_run.py \
   --task_name long_term_forecast \
-  --train_mode 2 \
-  --mask_rate 0.5 \
-  --interpolate no \
+  --train_mode 0 \
+  --mask_rate 0.125 \
+  --imp_args_json ImpModelArgs/ETT/TimesNet_ETTh1.json \
+  --learning_rate 0.001 \
   --is_training 1 \
-  --model_id ECL_0.5_96_96_R_no \
-  --root_path ./dataset/electricity/ \
-  --data_path electricity.csv \
+  --root_path ./dataset/ETT-small/ \
+  --data_path ETTh1.csv \
+  --model_id ETTh1_96_96 \
   --model $model_name \
-  --data custom \
+  --data ETTh1 \
   --features M \
   --seq_len 96 \
   --label_len 48 \
@@ -20,11 +21,9 @@ python -u mix_run.py \
   --e_layers 2 \
   --d_layers 1 \
   --factor 3 \
-  --enc_in 321 \
-  --dec_in 321 \
-  --c_out 321 \
-  --d_model 256 \
-  --d_ff 512 \
-  --top_k 5 \
+  --enc_in 7 \
+  --dec_in 7 \
+  --c_out 7 \
   --des 'Exp' \
   --itr 1
+
