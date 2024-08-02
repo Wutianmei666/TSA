@@ -77,12 +77,20 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 T = seq len
                 N = number of features
                 """
+                ## 如果需要插入均值，计算均值
+                if self.args.interpolate == 'mean':
+                    mean_x = torch.mean(batch_x,dim=1,keepdim=True)
+                    mean_x = mean_x.expand(B,T,N)
+
                 mask = torch.rand((B, T, N)).to(self.device)
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
                 if self.args.interpolate != 'no':
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    if self.args.interpolate == 'mean':
+                        batch_x = batch_x*mask + mean_x*(1-mask)
+                    else:
+                        batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -154,12 +162,20 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 T = seq len
                 N = number of features
                 """
+                ## 如果需要插入均值，计算均值
+                if self.args.interpolate == 'mean':
+                    mean_x = torch.mean(batch_x,dim=1,keepdim=True)
+                    mean_x = mean_x.expand(B,T,N)
+
                 mask = torch.rand((B, T, N)).to(self.device)
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
                 if self.args.interpolate != 'no':
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    if self.args.interpolate == 'mean':
+                        batch_x = batch_x*mask + mean_x*(1-mask)
+                    else:
+                        batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -253,12 +269,21 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 T = seq len
                 N = number of features
                 """
+                ## 如果需要插入均值，计算均值
+                if self.args.interpolate == 'mean':
+                    mean_x = torch.mean(batch_x,dim=1,keepdim=True)
+                    mean_x = mean_x.expand(B,T,N)
+
                 mask = torch.rand((B, T, N)).to(self.device)
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 batch_x = batch_x.masked_fill(mask == 0, 0)
+
                 if self.args.interpolate != 'no':
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    if self.args.interpolate == 'mean':
+                        batch_x = batch_x*mask + mean_x*(1-mask)
+                    else:
+                        batch_x = interpolate(batch_x,self.device,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
