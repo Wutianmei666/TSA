@@ -56,6 +56,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def vali(self, vali_data, vali_loader, criterion):
         
         total_loss = []
+        self.imp_model.eval()
         self.model.eval()
         with torch.no_grad():
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(vali_loader):
@@ -297,16 +298,16 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
                 preds.append(pred)
                 trues.append(true)
-                if i % 20 == 0:
-                    raw = batch_x_raw.detach().cpu().numpy()
-                    input = batch_x_imp.detach().cpu().numpy()
-                    if test_data.scale and self.args.inverse:
-                        shape = input.shape
-                        raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
-                        input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
-                    gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
-                    pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
-                    visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
+                # if i % 20 == 0:
+                #     raw = batch_x_raw.detach().cpu().numpy()
+                #     input = batch_x_imp.detach().cpu().numpy()
+                #     if test_data.scale and self.args.inverse:
+                #         shape = input.shape
+                #         raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
+                #         input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
+                #     gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
+                #     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
+                #     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
         preds = np.array(preds)
         trues = np.array(trues)
@@ -345,8 +346,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         f.write('\n')
         f.write('\n')
         f.close()
-        np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
-        np.save(folder_path + 'pred.npy', preds)
-        np.save(folder_path + 'true.npy', trues)
+        # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
+        # np.save(folder_path + 'pred.npy', preds)
+        # np.save(folder_path + 'true.npy', trues)
 
         return

@@ -7,6 +7,7 @@ e_layers=2
 d_layers=1
 d_model=32
 d_ff=32
+learning_rate=0.001
 for interpolate in no mean nearest linear
 do
     for mask_rate in  0.125 0.25 0.375 0.5
@@ -17,6 +18,7 @@ do
           --mask_rate $mask_rate \
           --interpolate $interpolate \
           --is_training 1 \
+          --learning_rate $learning_rate \
           --model_id ETTh1_${mask_rate}_96_96_R_${interpolate}\
           --root_path ./dataset/ETT-small/ \
           --data_path ETTh1.csv \

@@ -1,13 +1,13 @@
 export CUDA_VISIBLE_DEVICES=0
 model_name=Transformer
 # 更换填补模型时 需修改imp_args_json及对应的json文件
-imp_args_json=ImpModelArgs/ETT/Transformer_ETTh1.json
+imp_args_json=ImpModelArgs/ETT/TimesNet_ETTh1.json
 seq_len=96
 label_len=48
 pred_len=96
 e_layers=2
 d_layers=1
-
+learning_rate=0.001
 for mask_rate in 0.125 0.25 0.375 0.5
 do
 python -u mix_run.py \
@@ -16,6 +16,7 @@ python -u mix_run.py \
   --mask_rate $mask_rate \
   --imp_args_json $imp_args_json \
   --is_training 1 \
+  --learning_rate $learning_rate \
   --root_path ./dataset/ETT-small/ \
   --data_path ETTh1.csv \
   --model_id ETTh1_$mask_rate'_'96_96_I \

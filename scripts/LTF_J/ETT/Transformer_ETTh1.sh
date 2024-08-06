@@ -1,12 +1,13 @@
 export CUDA_VISIBLE_DEVICES=0
 model_name=Transformer
-imp_args_json=ImpModelArgs/ETT/Transformer_ETTh1.json
+imp_args_json=ImpModelArgs/ETT/TimesNet_ETTh1.json
 imp_lr=0.001
 seq_len=96
 label_len=48
 pred_len=96
 e_layers=2
 d_layers=1
+learning_rate=0.001
 # 固定lambda参数为0 0.5 1
 for fix_lambda in 0 0.5 1
 do
@@ -20,6 +21,7 @@ do
             --mask_rate $mask_rate \
             --imp_lr $imp_lr \
             --is_training 1 \
+            --learning_rate $learning_rate \
             --root_path ./dataset/ETT-small/ \
             --data_path ETTh1.csv \
             --model_id ETTh1_${mask_rate}_96_96_J \
@@ -52,6 +54,7 @@ do
       --mask_rate $mask_rate \
       --imp_lr $imp_lr \
       --is_training 1 \
+      --learning_rate $learning_rate \
       --root_path ./dataset/ETT-small/ \
       --data_path ETTh1.csv \
       --model_id ETTh1_${mask_rate}_96_96_J \
@@ -70,5 +73,3 @@ do
       --des 'Exp' \
       --itr 1 
 done
-
-shutdown

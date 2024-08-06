@@ -156,6 +156,13 @@ class Model(nn.Module):
             self.projection = nn.Linear(configs.c_out * configs.seq_len, configs.num_class)
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
+        # Normalization from Non-stationary Transformer
+        means = x_enc.mean(1, keepdim=True).detach()
+        x_enc = x_enc - means
+        stdev = torch.sqrt(
+            torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
+        x_enc = x_enc/stdev
+
         # Multi-scale Hybrid Decomposition
         seasonal_init_enc, trend = self.decomp_multi(x_enc)
         trend = self.regression(trend.permute(0, 2, 1)).permute(0, 2, 1)
@@ -166,9 +173,28 @@ class Model(nn.Module):
         dec_out = self.dec_embedding(seasonal_init_dec, x_mark_dec)
         dec_out = self.conv_trans(dec_out)
         dec_out = dec_out[:, -self.pred_len:, :] + trend[:, -self.pred_len:, :]
+
+        # De-Normalization from Non-stationary Transformer
+        dec_out = dec_out * \
+                  (stdev[:, 0, :].unsqueeze(1).repeat(
+                      1, self.pred_len , 1))
+        dec_out = dec_out + \
+                  (means[:, 0, :].unsqueeze(1).repeat(
+                      1, self.pred_len , 1))
+                      
         return dec_out
 
     def imputation(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask):
+        # Normalization from Non-stationary Transformer
+        means = torch.sum(x_enc, dim=1) / torch.sum(mask == 1, dim=1)
+        means = means.unsqueeze(1).detach()
+        x_enc = x_enc - means
+        x_enc = x_enc.masked_fill(mask == 0, 0)
+        stdev = torch.sqrt(torch.sum(x_enc * x_enc, dim=1) /
+                           torch.sum(mask == 1, dim=1) + 1e-5)
+        stdev = stdev.unsqueeze(1).detach()
+        x_enc = x_enc/stdev
+
         # Multi-scale Hybrid Decomposition
         seasonal_init_enc, trend = self.decomp_multi(x_enc)
 
@@ -176,6 +202,15 @@ class Model(nn.Module):
         dec_out = self.dec_embedding(seasonal_init_enc, x_mark_dec)
         dec_out = self.conv_trans(dec_out)
         dec_out = dec_out + trend
+
+        # De-Normalization from Non-stationary Transformer
+        dec_out = dec_out * \
+                  (stdev[:, 0, :].unsqueeze(1).repeat(
+                      1, self.pred_len + self.seq_len, 1))
+        dec_out = dec_out + \
+                  (means[:, 0, :].unsqueeze(1).repeat(
+                      1, self.pred_len + self.seq_len, 1))
+
         return dec_out
 
     def anomaly_detection(self, x_enc):

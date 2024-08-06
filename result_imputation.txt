@@ -53,16 +53,16 @@ mse:0.21480034291744232, mae:0.32913315296173096
 
 # MICN ETTh1数据集填补
 imputation_ETTh1_mask_0.125_MICN_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-mse:0.07404102385044098, mae:0.19373638927936554
+mse:0.056804027408361435, mae:0.16137655079364777
 
 imputation_ETTh1_mask_0.25_MICN_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-mse:0.10536443442106247, mae:0.23209810256958008
+mse:0.07957493513822556, mae:0.19000862538814545
 
 imputation_ETTh1_mask_0.375_MICN_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-mse:0.14006271958351135, mae:0.268248587846756
+mse:0.09832995384931564, mae:0.21095365285873413
 
 imputation_ETTh1_mask_0.5_MICN_ETTh1_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-mse:0.18044018745422363, mae:0.3062203526496887
+mse:0.12797166407108307, mae:0.2409491240978241
 
 # 7.29 Transformer ETTh1数据集填补 
 imputation_ETTh1_mask_0.125_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
@@ -76,4 +76,17 @@ mse:0.11228576302528381, mae:0.23641976714134216
 
 imputation_ETTh1_mask_0.5_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.1352030634880066, mae:0.26338624954223633
+
+
+imputation_ETTh1_mask_0.125_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.03546745330095291, mae:0.12766970694065094
+
+imputation_ETTh1_mask_0.25_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.0469161793589592, mae:0.1451607048511505
+
+imputation_ETTh1_mask_0.375_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.059677690267562866, mae:0.16297103464603424
+
+imputation_ETTh1_mask_0.5_Transformer_ETTh1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.08895891904830933, mae:0.19740374386310577
 

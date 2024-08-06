@@ -5,8 +5,8 @@ label_len=48
 pred_len=96
 e_layers=2
 d_layers=1
-d_model=32
-d_ff=32
+d_model=512
+d_ff=2048
 for interpolate in no mean nearest linear
 do
     for mask_rate in  0.125 0.25 0.375 0.5

@@ -358,16 +358,16 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
                 preds.append(pred)
                 trues.append(true)
-                if i % 20 == 0:
-                    raw = batch_x_raw.numpy()
-                    input = x_imp.numpy()
-                    if test_data.scale and self.args.inverse:
-                        shape = input.shape
-                        raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
-                        input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
-                    gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
-                    pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
-                    visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
+                # if i % 20 == 0:
+                #     raw = batch_x_raw.numpy()
+                #     input = x_imp.numpy()
+                #     if test_data.scale and self.args.inverse:
+                #         shape = input.shape
+                #         raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
+                #         input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
+                #     gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
+                #     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
+                #     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
 
         preds = np.array(preds)
         trues = np.array(trues)
