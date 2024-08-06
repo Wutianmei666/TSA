@@ -23,7 +23,7 @@ mse:0.3942170739173889, mae:0.42876142263412476, dtw:-999
 long_term_forecast_ETTh1_0.5_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.4183957278728485, mae:0.4413371682167053, dtw:-999
 
-# 7.29 TimesNet_Transformer
+# 7.29 TimesNet_Transformer Transformer_Transformer
 long_term_forecast_ETTh1_0.125_96_96_I_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 Use TimesNet to imputate data 
 mse:0.9251050353050232, mae:0.773331880569458, dtw:-999

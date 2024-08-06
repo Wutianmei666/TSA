@@ -182,7 +182,7 @@ mse:0.8155015110969543, mae:0.7074500322341919, dtw:-999
 
 long_term_forecast_ETTh1_0.125_96_96_R_linear_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 (use linear interpolate method to imputate data after mask)
-mse:0.867626965045929, mae:0.7332745790481567, dtw:-999
+mse:0.867626965045929, mae:0.737332745790481567, dtw:-999
 
 long_term_forecast_ETTh1_0.25_96_96_R_linear_Transformer_ETTh1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 (use linear interpolate method to imputate data after mask)
