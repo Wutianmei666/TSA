@@ -360,7 +360,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f = open("result_long_term_forecast_r.txt", 'a')
+        f = open("result_long_term_forecast_imp_r.txt", 'a')
         f.write(setting + "  \n")
         f.write('(use {} interpolate method to imputate data after mask)\n'.format(self.args.interpolate))
         f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
