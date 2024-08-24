@@ -23,11 +23,18 @@ class joint_loss(nn.Module):
         self._lambda = _lambda
         self.imp_ls_fn = imp_ls_fn
         self.ds_ls_fn = ds_ls_fn
+        self.sigmoid = torch.nn.Sigmoid()
         
     def forward(self,x_imp,y_imp,x_ds,y_ds):
         imp_loss = self.imp_ls_fn(x_imp, y_imp)
         ds_loss = self.ds_ls_fn(x_ds, y_ds)
-        total_loss = self._lambda*imp_loss + ds_loss
+        if self._lambda.requires_grad == True :
+            # 将lambda固定在0~1间
+            #self._lambda.data.copy_(self.sigmoid(self._lambda))
+            #total_loss = self.sigmoid(self._lambda)*imp_loss + (1-self.sigmoid(self._lambda))*ds_loss
+            total_loss = self._lambda*imp_loss + (1-self._lambda)*ds_loss
+        else :
+            total_loss = self._lambda*imp_loss + ds_loss
         return total_loss, imp_loss, ds_loss
 
 # 联合训练
@@ -68,10 +75,11 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                                     {'params':self.imp_model.parameters(),'lr':self.args.imp_lr}],
                                     lr=self.args.learning_rate)
         else:
-            model_optim = optim.Adam([{'params':self.model.parameters()},
-                                    {'params':self.imp_model.parameters(),'lr':self.args.imp_lr},
-                                    {'params':self._lambda,'lr':0.01}],
-                                    lr=self.args.learning_rate)
+            model_optim = optim.Adam([
+                                        {'params': self.model.parameters()},
+                                        {'params': self.imp_model.parameters(), 'lr': self.args.imp_lr},
+                                        {'params': self._lambda, 'lr': 0.0001, 'fixed_lr': False}  
+                                    ], lr=self.args.learning_rate)
         return model_optim
 
     def _select_criterion(self):
@@ -215,8 +223,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                         outputs = outputs[:, -self.args.pred_len:, f_dim:]
                         batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
                         # 将lambda限制在大于0 
-                        if self.args.requires_grad :
-                            self._lambda.data = self.activate_fn(self._lambda)
+                        # if self.args.requires_grad :
+                        #     self._lambda.data = self.activate_fn(self._lambda)
                         loss, imp_loss, ds_loss = criterion(x_imp[mask==0],batch_x_raw[mask==0],outputs, batch_y_raw)
                         train_loss.append(loss.item())
                 else:
@@ -228,8 +236,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
                     outputs = outputs[:, -self.args.pred_len:, f_dim:]
                     batch_y_raw = batch_y_raw[:, -self.args.pred_len:, f_dim:]
                     # 将lambda限制在大于0 
-                    if self.args.requires_grad :
-                        self._lambda.data = self.activate_fn(self._lambda)
+                    # if self.args.requires_grad :
+                    #     self._lambda.data = self.activate_fn(self._lambda)
                     loss, imp_loss, ds_loss = criterion(x_imp[mask==0],batch_x_raw[mask==0],outputs, batch_y_raw)
                     train_loss.append(loss.item())
 
