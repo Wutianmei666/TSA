@@ -1,4 +1,3 @@
-export CUDA_VISIBLE_DEVICES=0
 model_name=TimesNet
 imp_args_json=ImpModelArgs/ETT/TimesNet_ETTm1.json
 imp_lr=0.001
@@ -17,6 +16,8 @@ do
     for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
     do
         python -u mix_run.py \
+            --use_multi_gpu \
+            --devices 0,1 \
             --task_name long_term_forecast \
             --train_mode 1 \
             --_lambda $fix_lambda \
@@ -26,10 +27,10 @@ do
             --is_training 1 \
             --learning_rate $learning_rate \
             --root_path ./dataset/ETT-small/ \
-            --data_path ETTh1.csv \
-            --model_id ETTh1_${mask_rate}_96_96_J \
+            --data_path ETTm1.csv \
+            --model_id ETTm1_${mask_rate}_96_96_J \
             --model $model_name \
-            --data ETTh1 \
+            --data ETTm1 \
             --features M \
             --seq_len $seq_len \
             --label_len $label_len \
@@ -52,6 +53,8 @@ done
 for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
 do
     python -u mix_run.py \
+      --use_multi_gpu \
+      --devices 0,1 \
       --task_name long_term_forecast \
       --train_mode 1 \
       --_lambda 0.5 \

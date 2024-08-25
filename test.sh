@@ -1,8 +1,8 @@
-export CUDA_VISIBLE_DEVICES=0
-
 model_name=TimesNet
 
 python -u run.py \
+  --use_multi_gpu \
+  --devices 0,1 \
   --task_name long_term_forecast \
   --is_training 1 \
   --root_path ./dataset/ETT-small/ \
