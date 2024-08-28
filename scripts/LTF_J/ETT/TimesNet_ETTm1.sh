@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=0
+
 model_name=TimesNet
 imp_args_json=ImpModelArgs/ETT/TimesNet_ETTm1.json
 imp_lr=0.001

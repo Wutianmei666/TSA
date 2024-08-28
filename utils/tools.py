@@ -72,7 +72,7 @@ class EarlyStopping:
         self.val_loss_min = val_loss
 
 class EarlyStopping_J:
-    def __init__(self, patience=7, verbose=False, delta=0):
+    def __init__(self, patience=7, verbose=False, trainable=False,delta=0):
         self.patience = patience
         self.verbose = verbose
         self.counter = 0
@@ -80,12 +80,14 @@ class EarlyStopping_J:
         self.early_stop = False
         self.val_loss_min = np.Inf
         self.delta = delta
+        # trainable指\lambda是否可训练，可训练时保存lambda的值
+        self.trainable = trainable
 
-    def __call__(self, val_loss, imp_model, ds_model,path):
+    def __call__(self, val_loss, imp_model, ds_model,_lambda,path):
         score = -val_loss
         if self.best_score is None:
             self.best_score = score
-            self.save_checkpoint(val_loss, imp_model, ds_model, path)
+            self.save_checkpoint(val_loss, imp_model, ds_model,_lambda, path)
         elif score < self.best_score + self.delta:
             self.counter += 1
             print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
@@ -93,14 +95,19 @@ class EarlyStopping_J:
                 self.early_stop = True
         else:
             self.best_score = score
-            self.save_checkpoint(val_loss, imp_model, ds_model, path)
+            self.save_checkpoint(val_loss, imp_model, ds_model,_lambda,path)
             self.counter = 0
 
-    def save_checkpoint(self, val_loss, imp_model, ds_model, path):
+    def save_checkpoint(self, val_loss, imp_model, ds_model, _lambda, path):
         if self.verbose:
             print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
-        state = {'imp_model':imp_model.state_dict(),
-                 'ds_model':ds_model.state_dict()}
+        if self.trainable:
+            state = {'imp_model':imp_model.state_dict(),
+                    'ds_model':ds_model.state_dict(),
+                    'lambda': _lambda}
+        else :
+            state = {'imp_model':imp_model.state_dict(),
+                    'ds_model':ds_model.state_dict()}
         torch.save(state, path + '/' + 'checkpoint.pth')
         self.val_loss_min = val_loss
 
