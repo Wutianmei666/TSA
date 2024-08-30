@@ -56,7 +56,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
 
     def _bulid_imputation_model(self):
         imp_args, weight_path = _make_imp_args(self.args)
-        imp_model = self.model_dict[imp_args.model].Model(imp_args)
+        imp_model = self.model_dict[imp_args.model].Model(imp_args).float()
+        if self.args.use_multi_gpu and self.args.use_gpu:
+            imp_model = nn.DataParallel(imp_model,device_ids=self.args.device_ids)
         imp_model.to(self.device)
         return imp_model, imp_args.model
 
@@ -169,7 +171,10 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         time_now = time.time()
 
         train_steps = len(train_loader)
-        early_stopping = EarlyStopping_J(patience=self.args.patience, verbose=True)
+        early_stopping = EarlyStopping_J(patience=self.args.patience, 
+                                         verbose=True,
+                                         trainable=self.args.requires_grad
+                                         )
 
         model_optim = self._select_optimizer()
         criterion = self._select_criterion()
@@ -268,7 +273,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             print("Epoch: {0}, Steps: {1} | Vali Imp Loss: {2:.7f} Vali DS Loss: {3:.7f} | Test Imp Loss: {4:.7f} Test DS Loss: {5:.7f}".format(epoch+1,train_steps,
                                                                                                                                                 vali_loss_imp,vali_loss_ds,
                                                                                                                                                 test_loss_imp,test_loss_ds))
-            early_stopping(vali_loss_ds, self.imp_model,self.model, path)
+            early_stopping(vali_loss_ds, self.imp_model,self.model,self._lambda, path)
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
@@ -278,7 +283,9 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         best_model_path = path + '/' + 'checkpoint.pth'
         self.imp_model.load_state_dict(torch.load(best_model_path)['imp_model'])
         self.model.load_state_dict(torch.load(best_model_path)['ds_model'])
-
+        if self.args.requires_grad :
+            self._lambda=nn.Parameter(torch.load(best_model_path)['lambda'], requires_grad=self.args.requires_grad)
+            print(self._lambda.values)
         return self.model
 
     def test(self, setting, test=0):
@@ -287,8 +294,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
             print('loading model')
             self.imp_model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['imp_model'])
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['ds_model'])
-
-
+            if self.args.requires_grad :
+                self._lambda=nn.Parameter(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth'))['lambda'], requires_grad=self.args.requires_grad)
         imp_mse = []
         imp_mae = []
         preds = []

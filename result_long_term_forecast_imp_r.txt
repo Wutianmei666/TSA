@@ -288,3 +288,23 @@ long_term_forecast_ETTm1_0.75_96_96_R_linear_TimesNet_ETTm1_ftM_sl96_ll48_pl96_d
 (use linear interpolate method to imputate data after mask)
 mse:0.3598014712333679, mae:0.3874033987522125, dtw:-999
 
+long_term_forecast_ECL_0.125_96_96_R_no_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.16628409922122955, mae:0.27285468578338623, dtw:-999
+
+long_term_forecast_ECL_0.25_96_96_R_no_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.1719849556684494, mae:0.2789415717124939, dtw:-999
+
+long_term_forecast_ECL_0.375_96_96_R_no_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.18203221261501312, mae:0.28782811760902405, dtw:-999
+
+long_term_forecast_ECL_0.5_96_96_R_no_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.19476068019866943, mae:0.29868313670158386, dtw:-999
+
+long_term_forecast_ECL_0.625_96_96_R_no_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.21261289715766907, mae:0.3112289011478424, dtw:-999
+

@@ -33,11 +33,11 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
     def _bulid_imputation_model(self):
         imp_args, weight_path = _make_imp_args(self.args)
-        imp_model = self.model_dict[imp_args.model].Model(imp_args)
+        imp_model = self.model_dict[imp_args.model].Model(imp_args).float()
 
         # 装载填补模型权重
         imp_model.load_state_dict(torch.load(weight_path))
-        imp_model.to("cuda")
+        imp_model.to(self.device)
         imp_model.eval()
         return imp_model, imp_args.model
 
