@@ -144,3 +144,11 @@ long_term_forecast_ECL_0.5_96_96_I_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_
 Use TimesNet to imputate data 
 mse:0.17314641177654266, mae:0.2771308720111847, dtw:-999
 
+long_term_forecast_ECL_0.625_96_96_I_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.17466644942760468, mae:0.27978768944740295, dtw:-999
+
+long_term_forecast_ECL_0.75_96_96_I_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.1857530176639557, mae:0.2937450110912323, dtw:-999
+
