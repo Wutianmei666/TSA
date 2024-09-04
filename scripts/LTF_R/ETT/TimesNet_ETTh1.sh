@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 
 model_name=TimesNet
 seq_len=96
@@ -11,7 +11,7 @@ d_ff=32
 top_k=5
 for interpolate in no mean nearest linear
 do
-    for mask_rate in  0.125 0.25 0.375 0.5
+    for mask_rate in  0.125 0.25 0.375 0.5 0.625 0.75
     do
         python -u mix_run.py \
           --task_name long_term_forecast \
