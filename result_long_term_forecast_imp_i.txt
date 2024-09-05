@@ -224,3 +224,27 @@ long_term_forecast_ETTh1_0.75_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8
 Use Transformer to imputate data 
 mse:0.4309404492378235, mae:0.43448495864868164, dtw:-999
 
+long_term_forecast_ETTm1_0.125_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.35632896423339844, mae:0.38341832160949707, dtw:-999
+
+long_term_forecast_ETTm1_0.25_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.40935996174812317, mae:0.4064018130302429, dtw:-999
+
+long_term_forecast_ETTm1_0.375_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.40702611207962036, mae:0.40567275881767273, dtw:-999
+
+long_term_forecast_ETTm1_0.5_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.4036604166030884, mae:0.40442606806755066, dtw:-999
+
+long_term_forecast_ETTm1_0.625_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.3941551446914673, mae:0.40155068039894104, dtw:-999
+
+long_term_forecast_ETTm1_0.75_96_96_I_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use Transformer to imputate data 
+mse:0.3857367932796478, mae:0.40042656660079956, dtw:-999
+

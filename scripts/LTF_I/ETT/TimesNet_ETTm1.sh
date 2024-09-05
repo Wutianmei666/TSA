@@ -1,7 +1,7 @@
 export CUDA_VISIBLE_DEVICES=0
 model_name=TimesNet
 # 更换填补模型时 需修改imp_args_json及对应的json文件
-imp_args_json=ImpModelArgs/ETT/TimesNet_ETTm1.json
+imp_args_json=ImpModelArgs/ETT/Transformer_ETTm1.json
 seq_len=96
 label_len=48
 pred_len=96

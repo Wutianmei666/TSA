@@ -1,0 +1,17 @@
+{
+    "config":{
+        "model":"Transformer",
+        "e_layers":2,
+        "d_layers":1,
+        "d_model": 128,
+        "d_ff": 128
+    },
+    "weight_path": {
+        "0.125": "checkpoints/imputation_ETTm1_mask_0.125_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.25": "checkpoints/imputation_ETTm1_mask_0.25_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.375": "checkpoints/imputation_ETTm1_mask_0.375_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.5": "checkpoints/imputation_ETTm1_mask_0.5_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.625": "checkpoints/imputation_ETTm1_mask_0.625_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth",
+        "0.75": "checkpoints/imputation_ETTm1_mask_0.75_Transformer_ETTm1_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/checkpoint.pth"
+    }
+}

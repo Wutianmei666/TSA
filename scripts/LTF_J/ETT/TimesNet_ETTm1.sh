@@ -1,5 +1,6 @@
+export CUDA_VISIBLE_DEVICES=1
 model_name=TimesNet
-imp_args_json=ImpModelArgs/ETT/TimesNet_ETTm1.json
+imp_args_json=ImpModelArgs/ETT/Transformer_ETTm1.json
 imp_lr=0.001
 seq_len=96
 label_len=48
@@ -16,8 +17,6 @@ do
     for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
     do
         python -u mix_run.py \
-            --use_multi_gpu \
-            --devices 0,1 \
             --task_name long_term_forecast \
             --train_mode 1 \
             --_lambda $fix_lambda \
@@ -53,8 +52,6 @@ done
 for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
 do
     python -u mix_run.py \
-      --use_multi_gpu \
-      --devices 0,1 \
       --task_name long_term_forecast \
       --train_mode 1 \
       --_lambda 0.5 \

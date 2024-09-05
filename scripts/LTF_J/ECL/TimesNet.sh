@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=1
 model_name=TimesNet
-imp_args_json=ImpModelArgs/ECL/TimesNet.json
+imp_args_json=ImpModelArgs/ECL/Transformer.json
 imp_lr=0.001
 seq_len=96
 label_len=48
