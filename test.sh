@@ -27,7 +27,7 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
 
 python -u run.py \
   --task_name imputation \
@@ -54,7 +54,7 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
 
 python -u run.py \
   --task_name imputation \
@@ -81,7 +81,7 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
 
 python -u run.py \
   --task_name imputation \
@@ -108,7 +108,7 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
 
   python -u run.py \
   --task_name imputation \
@@ -135,7 +135,7 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
 
   python -u run.py \
   --task_name imputation \
@@ -162,4 +162,4 @@ python -u run.py \
   --des 'Exp' \
   --itr 1 \
   --top_k 5 \
-  --learning_rate 0.001
+  --learning_rate 0.0001
