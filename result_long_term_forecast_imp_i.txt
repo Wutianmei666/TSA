@@ -154,30 +154,6 @@ mse:0.1857530176639557, mae:0.2937450110912323, dtw:-999
 
 long_term_forecast_ETTh1_0.125_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 Use TimesNet to imputate data 
-mse:0.41462019085884094, mae:0.4222031533718109, dtw:-999
-
-long_term_forecast_ETTh1_0.25_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
-mse:0.4116489589214325, mae:0.42162033915519714, dtw:-999
-
-long_term_forecast_ETTh1_0.375_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
-mse:0.41501373052597046, mae:0.42351987957954407, dtw:-999
-
-long_term_forecast_ETTh1_0.5_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
-mse:0.414671391248703, mae:0.4236094355583191, dtw:-999
-
-long_term_forecast_ETTh1_0.625_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
-mse:0.4237286150455475, mae:0.4297253489494324, dtw:-999
-
-long_term_forecast_ETTh1_0.75_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
-mse:0.4341756999492645, mae:0.4365411698818207, dtw:-999
-
-long_term_forecast_ETTh1_0.125_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
-Use TimesNet to imputate data 
 mse:0.4146215319633484, mae:0.4222034215927124, dtw:-999
 
 long_term_forecast_ETTh1_0.25_96_96_I_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
