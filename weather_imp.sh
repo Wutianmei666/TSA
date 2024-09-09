@@ -37,4 +37,3 @@ do
     --learning_rate $learning_rate \
     --train_epochs 10
 done 
-

@@ -4,3 +4,6 @@ mse:0.6123847961425781, mae:0.5106296539306641, dtw:-999
 long_term_forecast_ETTm1_96_96_Transformer_ETTm1_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc1_ebtimeF_dtTrue_Exp_0  
 mse:0.411981999874115, mae:0.4212290346622467, dtw:-999
 
+long_term_forecast_ECL_96_96_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.1691761314868927, mae:0.2732953131198883, dtw:-999
+
