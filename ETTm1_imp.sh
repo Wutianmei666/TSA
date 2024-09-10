@@ -1,12 +1,13 @@
 export CUDA_VISIBLE_DEVICES=0
 model_name=Autoformer
-d_model=128
-d_ff=128
+d_model=64
+d_ff=64
 seq_len=96
 label_len=0
 pred_len=0
 learning_rate=0.001
 for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
+#for mask_rate in 0.125
 do
 python -u run.py \
   --task_name imputation \
@@ -35,6 +36,6 @@ python -u run.py \
   --top_k 5 \
   --learning_rate $learning_rate\
   --lradj type1 \
-  --train_epoches 10
+  --train_epochs 10
 done 
 

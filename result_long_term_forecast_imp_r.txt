@@ -660,3 +660,19 @@ long_term_forecast_weather_0.25_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl9
 (use linear interpolate method to imputate data after mask)
 mse:0.16670314967632294, mae:0.215139701962471, dtw:-999
 
+long_term_forecast_weather_0.375_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.1700071096420288, mae:0.2201310694217682, dtw:-999
+
+long_term_forecast_weather_0.5_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.17592261731624603, mae:0.22099916636943817, dtw:-999
+
+long_term_forecast_weather_0.625_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.17302526533603668, mae:0.21999482810497284, dtw:-999
+
+long_term_forecast_weather_0.75_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.1802140474319458, mae:0.22238272428512573, dtw:-999
+

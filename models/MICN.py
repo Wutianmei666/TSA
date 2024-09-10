@@ -186,14 +186,14 @@ class Model(nn.Module):
 
     def imputation(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask):
         # Normalization from Non-stationary Transformer
-        means = torch.sum(x_enc, dim=1) / torch.sum(mask == 1, dim=1)
-        means = means.unsqueeze(1).detach()
-        x_enc = x_enc - means
-        x_enc = x_enc.masked_fill(mask == 0, 0)
-        stdev = torch.sqrt(torch.sum(x_enc * x_enc, dim=1) /
-                           torch.sum(mask == 1, dim=1) + 1e-5)
-        stdev = stdev.unsqueeze(1).detach()
-        x_enc = x_enc/stdev
+        # means = torch.sum(x_enc, dim=1) / torch.sum(mask == 1, dim=1)
+        # means = means.unsqueeze(1).detach()
+        # x_enc = x_enc - means
+        # x_enc = x_enc.masked_fill(mask == 0, 0)
+        # stdev = torch.sqrt(torch.sum(x_enc * x_enc, dim=1) /
+        #                    torch.sum(mask == 1, dim=1) + 1e-5)
+        # stdev = stdev.unsqueeze(1).detach()
+        # x_enc = x_enc/stdev
 
         # Multi-scale Hybrid Decomposition
         seasonal_init_enc, trend = self.decomp_multi(x_enc)
@@ -204,12 +204,12 @@ class Model(nn.Module):
         dec_out = dec_out + trend
 
         # De-Normalization from Non-stationary Transformer
-        dec_out = dec_out * \
-                  (stdev[:, 0, :].unsqueeze(1).repeat(
-                      1, self.pred_len + self.seq_len, 1))
-        dec_out = dec_out + \
-                  (means[:, 0, :].unsqueeze(1).repeat(
-                      1, self.pred_len + self.seq_len, 1))
+        # dec_out = dec_out * \
+        #           (stdev[:, 0, :].unsqueeze(1).repeat(
+        #               1, self.pred_len + self.seq_len, 1))
+        # dec_out = dec_out + \
+        #           (means[:, 0, :].unsqueeze(1).repeat(
+        #               1, self.pred_len + self.seq_len, 1))
 
         return dec_out
 
