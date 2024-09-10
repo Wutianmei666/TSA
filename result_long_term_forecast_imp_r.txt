@@ -656,3 +656,7 @@ long_term_forecast_weather_0.125_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl
 (use linear interpolate method to imputate data after mask)
 mse:0.16766676306724548, mae:0.21568699181079865, dtw:-999
 
+long_term_forecast_weather_0.25_96_96_R_linear_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.16670314967632294, mae:0.215139701962471, dtw:-999
+
