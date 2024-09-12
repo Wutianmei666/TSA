@@ -295,3 +295,6 @@ mse:0.26458558440208435, mae:0.3818831741809845
 imputation_ECL_mask_0.75_FEDformer_custom_ftM_sl96_ll0_pl0_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.29661431908607483, mae:0.40032753348350525
 
+imputation_weather_mask_0.125_MICN_custom_ftM_sl96_ll0_pl0_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.034656818956136703, mae:0.08584581315517426
+

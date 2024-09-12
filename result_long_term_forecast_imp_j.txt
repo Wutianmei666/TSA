@@ -1108,3 +1108,31 @@ long_term_forecast_weather_0.125_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32
 (imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
 ds_mse:0.1708187460899353, ds_mae:0.22091583907604218, imp_mse:0.029237229095991885, imp_mae:0.05903175317802312, total_mse:0.18543736063793126, total_mae:0.25043171566505373
 
+long_term_forecast_weather_0.25_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
+ds_mse:0.17193619906902313, ds_mae:0.21879692375659943, imp_mse:0.034985465676798, imp_mae:0.06935897607504865, total_mse:0.18942893190742213, total_mae:0.2534764117941237
+
+long_term_forecast_weather_0.375_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
+ds_mse:0.17664498090744019, ds_mae:0.22582869231700897, imp_mse:0.037101789656526586, imp_mae:0.07433809716528728, total_mse:0.1951958757357035, total_mae:0.2629977408996526
+
+long_term_forecast_weather_0.5_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
+ds_mse:0.17763811349868774, ds_mae:0.2266291379928589, imp_mse:0.045102611296964475, imp_mae:0.08901375270465765, total_mse:0.20018941914716998, total_mae:0.2711360143451877
+
+long_term_forecast_weather_0.625_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
+ds_mse:0.18073251843452454, ds_mae:0.23036375641822815, imp_mse:0.04697258501782145, imp_mae:0.08675095962040538, total_mse:0.20421881094343525, total_mae:0.2737392362284308
+
+long_term_forecast_weather_0.75_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.5(Fix), lradj:cosine)
+ds_mse:0.18573905527591705, ds_mae:0.2332858145236969, imp_mse:0.05262040489558931, imp_mae:0.09253066321663513, total_mse:0.2120492577237117, total_mae:0.2795511461320145
+
+long_term_forecast_weather_0.125_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.17031116783618927, ds_mae:0.22064104676246643, imp_mse:0.029207805186250116, imp_mae:0.05715789448789841, total_mse:0.19951897302243937, total_mae:0.27779894125036486
+
+long_term_forecast_weather_0.25_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.16997410356998444, ds_mae:0.2167719304561615, imp_mse:0.030696986328833307, imp_mae:0.057707030174716664, total_mse:0.20067108989881774, total_mae:0.2744789606308782
+

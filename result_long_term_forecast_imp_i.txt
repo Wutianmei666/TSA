@@ -248,3 +248,67 @@ long_term_forecast_weather_0.75_96_96_I_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_
 Use TimesNet to imputate data 
 mse:0.17947399616241455, mae:0.2269945740699768, dtw:-999
 
+long_term_forecast_ETTh1_0.125_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.4107879102230072, mae:0.41720759868621826, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.431547611951828, mae:0.4240613877773285, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.42144912481307983, mae:0.42327722907066345, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.4118668735027313, mae:0.42531758546829224, dtw:-999
+
+long_term_forecast_ETTh1_0.625_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.42734113335609436, mae:0.44386783242225647, dtw:-999
+
+long_term_forecast_ETTh1_0.75_96_96_I_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.42687100172042847, mae:0.4447877109050751, dtw:-999
+
+long_term_forecast_ETTm1_0.125_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.33041322231292725, mae:0.3669191598892212, dtw:-999
+
+long_term_forecast_ETTm1_0.25_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.3286304771900177, mae:0.3672618567943573, dtw:-999
+
+long_term_forecast_ETTm1_0.375_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.32630282640457153, mae:0.3654971718788147, dtw:-999
+
+long_term_forecast_ETTm1_0.5_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.3287249803543091, mae:0.37144362926483154, dtw:-999
+
+long_term_forecast_ETTm1_0.625_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.3395296633243561, mae:0.3865289092063904, dtw:-999
+
+long_term_forecast_ETTm1_0.75_96_96_I_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.3517131507396698, mae:0.40123385190963745, dtw:-999
+
+long_term_forecast_weather_0.125_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.16967566311359406, mae:0.2172250747680664, dtw:-999
+
+long_term_forecast_weather_0.25_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.16995380818843842, mae:0.21948102116584778, dtw:-999
+
+long_term_forecast_weather_0.375_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.17069143056869507, mae:0.22439488768577576, dtw:-999
+
+long_term_forecast_weather_0.5_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.17117628455162048, mae:0.22668886184692383, dtw:-999
+
