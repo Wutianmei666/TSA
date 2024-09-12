@@ -1,5 +1,5 @@
 export CUDA_VISIBLE_DEVICES=0
-model_name=Autoformer
+model_name=MICN
 d_model=64
 d_ff=64
 seq_len=96

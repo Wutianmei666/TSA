@@ -10,3 +10,15 @@ mse:0.1691761314868927, mae:0.2732953131198883, dtw:-999
 long_term_forecast_weather_96_96_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.17056332528591156, mae:0.2214174121618271, dtw:-999
 
+long_term_forecast_ETTh1_96_96_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.40517571568489075, mae:0.41413062810897827, dtw:-999
+
+long_term_forecast_ETTm1_96_96_MICN_ETTm1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.3335573077201843, mae:0.3688170909881592, dtw:-999
+
+long_term_forecast_weather_96_96_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.1657344400882721, mae:0.21280230581760406, dtw:-999
+
+long_term_forecast_ECL_96_96_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.16139724850654602, mae:0.26547738909721375, dtw:-999
+

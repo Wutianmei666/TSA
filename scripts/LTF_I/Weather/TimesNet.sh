@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=1
+export CUDA_VISIBLE_DEVICES=0
 model_name=TimesNet
 # 更换填补模型时 需修改imp_args_json及对应的json文件
 imp_args_json=ImpModelArgs/Weather/TimesNet.json
