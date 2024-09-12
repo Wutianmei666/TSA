@@ -312,3 +312,7 @@ long_term_forecast_weather_0.5_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_e
 Use MICN to imputate data 
 mse:0.17117628455162048, mae:0.22668886184692383, dtw:-999
 
+long_term_forecast_weather_0.625_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use MICN to imputate data 
+mse:0.17775169014930725, mae:0.23615209758281708, dtw:-999
+

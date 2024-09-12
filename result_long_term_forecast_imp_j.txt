@@ -1136,3 +1136,7 @@ long_term_forecast_weather_0.25_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_
 (imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
 ds_mse:0.16997410356998444, ds_mae:0.2167719304561615, imp_mse:0.030696986328833307, imp_mae:0.057707030174716664, total_mse:0.20067108989881774, total_mae:0.2744789606308782
 
+long_term_forecast_weather_0.375_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.16887737810611725, ds_mae:0.2161770462989807, imp_mse:0.03364125777363057, imp_mae:0.06358606881673443, total_mse:0.20251863587974783, total_mae:0.27976311511571517
+
