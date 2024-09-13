@@ -1140,3 +1140,39 @@ long_term_forecast_weather_0.375_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32
 (imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
 ds_mse:0.16887737810611725, ds_mae:0.2161770462989807, imp_mse:0.03364125777363057, imp_mae:0.06358606881673443, total_mse:0.20251863587974783, total_mae:0.27976311511571517
 
+long_term_forecast_weather_0.5_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.1723642498254776, ds_mae:0.220919668674469, imp_mse:0.037520462605656564, imp_mae:0.07121159524251164, total_mse:0.20988471243113416, total_mae:0.29213126391698063
+
+long_term_forecast_weather_0.625_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.17720791697502136, ds_mae:0.2262321561574936, imp_mse:0.04245204208675841, imp_mae:0.07799865450264394, total_mse:0.21965995906177976, total_mae:0.3042308106601375
+
+long_term_forecast_weather_0.75_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:1.0(Fix), lradj:cosine)
+ds_mse:0.18446309864521027, ds_mae:0.23014071583747864, imp_mse:0.04943657430114533, imp_mae:0.08680061540892062, total_mse:0.2338996729463556, total_mae:0.3169413312463992
+
+long_term_forecast_weather_0.125_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.6858249306678772(Trainable), lradj:cosine)
+ds_mse:0.17097079753875732, ds_mae:0.22131098806858063, imp_mse:0.029444729322224764, imp_mae:0.05747088737088753, total_mse:0.1856931621998697, total_mae:0.2500464317540244
+
+long_term_forecast_weather_0.25_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.8964031934738159(Trainable), lradj:cosine)
+ds_mse:0.170043483376503, ds_mae:0.2174513190984726, imp_mse:0.029063129305491008, imp_mae:0.05389911919957929, total_mse:0.18457504802924848, total_mae:0.24440087869826224
+
+long_term_forecast_weather_0.375_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.9106633067131042(Trainable), lradj:cosine)
+ds_mse:0.16924388706684113, ds_mae:0.21866850554943085, imp_mse:0.033123606160294514, imp_mae:0.06132341349680274, total_mse:0.1858056901469884, total_mae:0.24933021229783223
+
+long_term_forecast_weather_0.5_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.9143618941307068(Trainable), lradj:cosine)
+ds_mse:0.1714620441198349, ds_mae:0.2205629199743271, imp_mse:0.03567693499095475, imp_mae:0.06490932472987226, total_mse:0.18930051161531228, total_mae:0.2530175823392632
+
+long_term_forecast_weather_0.625_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.7880525588989258(Trainable), lradj:cosine)
+ds_mse:0.1750495731830597, ds_mae:0.22386197745800018, imp_mse:0.041495309414861986, imp_mae:0.0739675974130539, total_mse:0.1957972278904907, total_mae:0.26084577616452714
+
+long_term_forecast_weather_0.75_96_96_J_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(imp_model:TimesNet, initial lr:0.0001, initial imp lr: 0.001 lambda:0.899379312992096(Trainable), lradj:cosine)
+ds_mse:0.18084785342216492, ds_mae:0.22807912528514862, imp_mse:0.04868671355020552, imp_mae:0.08340378046504285, total_mse:0.2051912101972677, total_mae:0.26978101551767003
+

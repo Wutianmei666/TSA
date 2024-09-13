@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=1
 model_name=MICN
-imp_args_json=ImpModelArgs/ETT/MICN_ETTh1.json
+imp_args_json=ImpModelArgs/ETT/MICN_ETTm1.json
 imp_lr=0.001
 seq_len=96
 label_len=96
@@ -26,10 +26,10 @@ do
             --is_training 1 \
             --learning_rate $learning_rate \
             --root_path ./dataset/ETT-small/ \
-            --data_path ETTh1.csv \
-            --model_id ETTh1_${mask_rate}_96_96_J \
+            --data_path ETTm1.csv \
+            --model_id ETTm1_${mask_rate}_96_96_J \
             --model $model_name \
-            --data ETTh1 \
+            --data ETTm1 \
             --features M \
             --seq_len $seq_len \
             --label_len $label_len \
@@ -62,10 +62,10 @@ do
       --is_training 1 \
       --learning_rate $learning_rate \
       --root_path ./dataset/ETT-small/ \
-      --data_path ETTh1.csv \
-      --model_id ETTh1_${mask_rate}_96_96_J \
+      --data_path ETTm1.csv \
+      --model_id ETTm1_${mask_rate}_96_96_J \
       --model $model_name \
-      --data ETTh1 \
+      --data ETTm1 \
       --features M \
       --seq_len $seq_len \
       --label_len $label_len \
