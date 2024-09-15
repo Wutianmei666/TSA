@@ -1,14 +1,14 @@
 export CUDA_VISIBLE_DEVICES=1
 model_name=MICN
-imp_args_json=ImpModelArgs/ETT/MICN_ETTh1.json
+imp_args_json=ImpModelArgs/Weather/MICN.json
 imp_lr=0.001
 seq_len=96
 label_len=96
 pred_len=96
 e_layers=2
 d_layers=1
-d_model=512
-d_ff=2048
+d_model=32
+d_ff=32
 learning_rate=0.0001
 top_k=5
 # 固定lambda参数为0 0.5 1
@@ -25,11 +25,11 @@ do
             --imp_lr $imp_lr \
             --is_training 1 \
             --learning_rate $learning_rate \
-            --root_path ./dataset/ETT-small/ \
-            --data_path ETTh1.csv \
-            --model_id ETTh1_${mask_rate}_96_96_J \
+            --root_path ./dataset/weather/ \
+            --data_path weather.csv \
+            --model_id weather_${mask_rate}_96_96_J \
             --model $model_name \
-            --data ETTh1 \
+            --data custom \
             --features M \
             --seq_len $seq_len \
             --label_len $label_len \
@@ -40,9 +40,9 @@ do
             --d_ff $d_ff \
             --top_k $top_k \
             --factor 3 \
-            --enc_in 7 \
-            --dec_in 7 \
-            --c_out 7 \
+            --enc_in 21 \
+            --dec_in 21 \
+            --c_out 21 \
             --des 'Exp' \
             --itr 1
     done
@@ -61,11 +61,11 @@ do
       --imp_lr $imp_lr \
       --is_training 1 \
       --learning_rate $learning_rate \
-      --root_path ./dataset/ETT-small/ \
-      --data_path ETTh1.csv \
-      --model_id ETTh1_${mask_rate}_96_96_J \
+      --root_path ./dataset/weather/ \
+      --data_path weather.csv \
+      --model_id weather_${mask_rate}_96_96_J \
       --model $model_name \
-      --data ETTh1 \
+      --data custom \
       --features M \
       --seq_len $seq_len \
       --label_len $label_len \
@@ -76,9 +76,9 @@ do
       --d_ff $d_ff \
       --top_k $top_k \
       --factor 3 \
-      --enc_in 7 \
-      --dec_in 7 \
-      --c_out 7 \
+      --enc_in 21 \
+      --dec_in 21 \
+      --c_out 21 \
       --des 'Exp' \
       --itr 1 
 done

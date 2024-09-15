@@ -1,13 +1,14 @@
 export CUDA_VISIBLE_DEVICES=1
-model_name=MICN
+model_name=Autoformer
 d_model=64
 d_ff=64
 seq_len=96
 label_len=0
 pred_len=0
 learning_rate=0.001
-#for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
-for mask_rate in 0.125
+lradj=type1
+for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
+#for mask_rate in 0.125
 #for mask_rate in 0.25 0.375 0.5 0.625 0.75
 do
   python -u run.py \
@@ -36,7 +37,7 @@ do
     --itr 1 \
     --top_k 5 \
     --learning_rate $learning_rate \
-    --lradj type1 \
+    --lradj $lradj \
     --train_epochs 10
 done 
 

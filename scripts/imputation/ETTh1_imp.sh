@@ -1,14 +1,15 @@
 export CUDA_VISIBLE_DEVICES=1
-model_name=FEDformer
-d_model=128
-d_ff=128
+model_name=Autoformer
+d_model=64
+d_ff=32
 seq_len=96
 label_len=0
 pred_len=0
 learning_rate=0.001
+lradj=type1
 #for mask_rate in 0.125 0.25 0.375 0.5 0.625 0.75
-for mask_rate in 0.125
-#for mask_rate in 0.25 0.375 0.5 0.625 0.75
+#for mask_rate in 0.125
+for mask_rate in 0.25 0.375 0.5 0.625 0.75
 do
   python -u run.py \
     --task_name imputation \
@@ -35,6 +36,7 @@ do
     --des 'Exp' \
     --itr 1 \
     --top_k 5 \
+    --lradj $lradj \
     --learning_rate $learning_rate \
     --train_epochs 10
 done 
