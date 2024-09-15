@@ -25,6 +25,14 @@ class Model(nn.Module):
         self.individual = individual
         self.channels = configs.enc_in
 
+        # 加入位置embedding查看效果
+
+
+
+
+
+
+
         if self.individual:
             self.Linear_Seasonal = nn.ModuleList()
             self.Linear_Trend = nn.ModuleList()
