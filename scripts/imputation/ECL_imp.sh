@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=1
 model_name=FEDformer
-d_model=64
+d_model=32
 d_ff=32
 seq_len=96
 label_len=0

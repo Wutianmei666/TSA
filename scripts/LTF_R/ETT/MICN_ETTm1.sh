@@ -1,6 +1,5 @@
 export CUDA_VISIBLE_DEVICES=0
-
-model_name=TimesNet
+model_name=MICN
 seq_len=96
 label_len=96
 pred_len=96
@@ -19,11 +18,11 @@ do
           --mask_rate $mask_rate \
           --interpolate $interpolate \
           --is_training 1 \
-          --model_id ETTh1_${mask_rate}_96_96_R_${interpolate}\
+          --model_id ETTm1_${mask_rate}_96_96_R_${interpolate}\
           --root_path ./dataset/ETT-small/ \
-          --data_path ETTh1.csv \
+          --data_path ETTm1.csv \
           --model $model_name \
-          --data ETTh1 \
+          --data ETTm1 \
           --features M \
           --seq_len $seq_len \
           --label_len $label_len \

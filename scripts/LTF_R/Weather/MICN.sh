@@ -1,13 +1,12 @@
 export CUDA_VISIBLE_DEVICES=0
-
-model_name=TimesNet
+model_name=MICN     
 seq_len=96
 label_len=96
 pred_len=96
 e_layers=2
 d_layers=1
-d_model=512
-d_ff=2048
+d_model=32
+d_ff=32
 top_k=5
 for interpolate in no mean nearest linear
 do
@@ -19,11 +18,11 @@ do
           --mask_rate $mask_rate \
           --interpolate $interpolate \
           --is_training 1 \
-          --model_id ETTh1_${mask_rate}_96_96_R_${interpolate}\
-          --root_path ./dataset/ETT-small/ \
-          --data_path ETTh1.csv \
+          --model_id weather_${mask_rate}_96_96_R_${interpolate}\
+          --root_path ./dataset/weather/ \
+          --data_path weather.csv \
           --model $model_name \
-          --data ETTh1 \
+          --data custom \
           --features M \
           --seq_len $seq_len \
           --label_len $label_len \
@@ -31,9 +30,9 @@ do
           --e_layers $e_layers \
           --d_layers $d_layers \
           --factor 3 \
-          --enc_in 7 \
-          --dec_in 7 \
-          --c_out 7 \
+          --enc_in 21 \
+          --dec_in 21 \
+          --c_out 21 \
           --d_model $d_model \
           --d_ff $d_ff \
           --des 'Exp' \
