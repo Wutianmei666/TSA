@@ -10,6 +10,8 @@ import time
 from scipy.interpolate import interp1d
 import warnings
 import numpy as np
+import pandas as pd
+import datetime
 from utils.dtw_metric import dtw,accelerated_dtw
 from utils.augmentation import run_augmentation,run_augmentation_single
 
@@ -247,6 +249,8 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
             print('loading model')
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
 
+        imp_mse = []
+        imp_mae = []
         preds = []
         trues = []
         folder_path = './test_results/' + setting + '/'
@@ -255,12 +259,17 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
 
         self.model.eval()
         with torch.no_grad():
+            mse_fn = nn.MSELoss()
+            mae_fn = nn.L1Loss()
             for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x = batch_x.float().to(self.device)
                 batch_y = batch_y.float().to(self.device)
 
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
+
+                ##  复制一个batch_x用于后续计算填补损失
+                x_raw = batch_x.clone().detach().cpu()
 
                 ## random mask
                 B, T, N = batch_x.shape
@@ -284,6 +293,9 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                         batch_x = batch_x*mask + mean_x*(1-mask)
                     else:
                         batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                
+                # 复制一个
+                x_imp = batch_x.clone().detach().cpu()
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -319,6 +331,9 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 pred = outputs
                 true = batch_y
 
+                imp_mae.append(mae_fn(x_raw[mask==0],x_imp[mask==0]).item())
+                imp_mse.append(mse_fn(x_raw[mask==0],x_imp[mask==0]).item())
+
                 preds.append(pred)
                 trues.append(true)
                 # if i % 20 == 0:
@@ -336,6 +351,11 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print('test shape:', preds.shape, trues.shape)
+
+        breakpoint()
+        # calculate imputaion loss
+        imp_mae = np.mean(imp_mae)
+        imp_mse = np.mean(imp_mse)
 
         # result save
         folder_path = './results/' + setting + '/'
@@ -363,11 +383,15 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         f = open("result_long_term_forecast_imp_r.txt", 'a')
         f.write(setting + "  \n")
         f.write('(use {} interpolate method to imputate data after mask)\n'.format(self.args.interpolate))
-        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
+        f.write('mse:{}, mae:{}, imp_mse:{}, imp_mae:{}, dtw:{}'.format(mse, mae, imp_mse,imp_mae,dtw))
         f.write('\n')
         f.write('\n')
         f.close()
 
+        # 写入csv文件中,需要保存的参数如下
+        """ 数据集:self.args.dataset  下游模型:self.args.model 填补方法:self.args.interpolate 掩码率:self.args.mask_rate(0.125)
+            填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')"""
+        
         # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
         # np.save(folder_path + 'pred.npy', preds)
         # np.save(folder_path + 'true.npy', trues)
