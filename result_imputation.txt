@@ -778,3 +778,6 @@ mse:0.08277922123670578, mae:0.17074325680732727
 imputation_weather_mask_0.625_FEDformer_custom_ftM_sl96_ll0_pl0_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
 mse:0.11099056154489517, mae:0.20752960443496704
 
+imputation_weather_mask_0.75_FEDformer_custom_ftM_sl96_ll0_pl0_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+mse:0.11397561430931091, mae:0.21240024268627167
+
