@@ -39,7 +39,8 @@ if __name__ == '__main__':
     parser.add_argument('--imp_lr',type=float, default=0.001,help='initial learning rate for imputation model')
 
     # data loader
-    parser.add_argument('--data', type=str, required=True, default='ETTm1', help='dataset type')
+    parser.add_argument('--dataset', type=str, required=True, default='ETTh1', help='save the dataset name to csv')
+    parser.add_argument('--data', type=str, required=True, default='ETTh1', help='dataset type')
     parser.add_argument('--root_path', type=str, default='./data/ETT/', help='root path of the data file')
     parser.add_argument('--data_path', type=str, default='ETTh1.csv', help='data file')
     parser.add_argument('--features', type=str, default='M',
