@@ -352,7 +352,6 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print('test shape:', preds.shape, trues.shape)
 
-        breakpoint()
         # calculate imputaion loss
         imp_mae = np.mean(imp_mae)
         imp_mse = np.mean(imp_mse)
@@ -390,8 +389,24 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
 
         # 写入csv文件中,需要保存的参数如下
         """ 数据集:self.args.dataset  下游模型:self.args.model 填补方法:self.args.interpolate 掩码率:self.args.mask_rate(0.125)
-            填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')"""
-        
+            填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
+            加入总结果:0(1)"""
+
+        df = pd.read_csv('R.csv')
+        result_dict = {
+                        "数据集":self.args.dataset,
+                        "下游模型": self.args.model,
+                        "填补方法": self.args.interpolate,
+                        "掩码率":str(self.args.mask_rate*100)+'%',
+                        "填补MSE": imp_mse,
+                        "填补MAE": imp_mae,
+                        "下游MSE": mse,
+                        "下游MAE": mae,
+                        "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
+                        "是否汇入总表":0
+                        }
+        df = pd.concat([df,pd.DataFrame([result_dict])],ignore_index=True)
+        df.to_csv('R.csv',index=False)
         # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
         # np.save(folder_path + 'pred.npy', preds)
         # np.save(folder_path + 'true.npy', trues)
