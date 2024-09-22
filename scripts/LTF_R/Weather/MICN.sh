@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 model_name=MICN     
 seq_len=96
 label_len=96
@@ -22,6 +22,7 @@ do
           --root_path ./dataset/weather/ \
           --data_path weather.csv \
           --model $model_name \
+          --dataset Weather \
           --data custom \
           --features M \
           --seq_len $seq_len \
