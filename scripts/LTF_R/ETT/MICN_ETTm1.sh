@@ -20,6 +20,7 @@ do
           --is_training 1 \
           --model_id ETTm1_${mask_rate}_96_96_R_${interpolate}\
           --root_path ./dataset/ETT-small/ \
+          --dataset ETTm1   \
           --data_path ETTm1.csv \
           --model $model_name \
           --data ETTm1 \

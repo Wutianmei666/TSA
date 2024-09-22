@@ -1,6 +1,5 @@
 export CUDA_VISIBLE_DEVICES=0
-
-model_name=TimesNet
+model_name=MICN
 seq_len=96
 label_len=96
 pred_len=96
@@ -23,6 +22,7 @@ do
           --root_path ./dataset/ETT-small/ \
           --data_path ETTh1.csv \
           --model $model_name \
+          --dataset ETTh1 \
           --data ETTh1 \
           --features M \
           --seq_len $seq_len \
@@ -38,6 +38,7 @@ do
           --d_ff $d_ff \
           --des 'Exp' \
           --itr 1 \
+          --batch_size 16 \
           --top_k $top_k
     done 
 done

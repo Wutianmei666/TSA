@@ -908,3 +908,127 @@ long_term_forecast_weather_0.625_96_96_R_nearest_MICN_custom_ftM_sl96_ll96_pl96_
 (use nearest interpolate method to imputate data after mask)
 mse:0.1713879108428955, mae:0.2169722318649292, imp_mse:0.04958427863044127, imp_mae:0.0499805328779014, dtw:-999
 
+long_term_forecast_weather_0.75_96_96_R_nearest_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.1740119904279709, mae:0.220951110124588, imp_mse:0.058022447167524346, imp_mae:0.057804222867189926, dtw:-999
+
+long_term_forecast_weather_0.125_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.16581840813159943, mae:0.21333268284797668, imp_mse:0.027408082168149345, imp_mae:0.03139045494865695, dtw:-999
+
+long_term_forecast_ECL_0.25_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.1546054482460022, mae:0.2577318847179413, imp_mse:0.10303046869009919, imp_mae:0.20385900389703904, dtw:-999
+
+long_term_forecast_weather_0.25_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.1674637794494629, mae:0.21498161554336548, imp_mse:0.03040935068271277, imp_mae:0.03331807155756314, dtw:-999
+
+long_term_forecast_ETTh1_0.125_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.45001885294914246, mae:0.434743195772171, imp_mse:1.112747463686713, imp_mae:0.7962550496918032, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.44073814153671265, mae:0.4453444182872772, imp_mse:1.1163828297593128, imp_mae:0.7974333948102491, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.4641483724117279, mae:0.4738176167011261, imp_mse:1.1169764111781944, imp_mae:0.7976010500014513, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.5198813676834106, mae:0.5148378610610962, imp_mse:1.11626746496935, imp_mae:0.7972499978268284, dtw:-999
+
+long_term_forecast_ETTh1_0.625_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.6186186075210571, mae:0.5908859968185425, imp_mse:1.1157748270993946, imp_mae:0.7970356790498755, dtw:-999
+
+long_term_forecast_ETTh1_0.75_96_96_R_no_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use no interpolate method to imputate data after mask)
+mse:0.6334636211395264, mae:0.597119927406311, imp_mse:1.116253349630312, imp_mae:0.797289976100812, dtw:-999
+
+long_term_forecast_ETTh1_0.125_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.4513964354991913, mae:0.4307950437068939, imp_mse:0.6400961386061262, imp_mae:0.5271806314416315, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.4426210820674896, mae:0.42768555879592896, imp_mse:0.6392283634892826, imp_mae:0.5267893711383316, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.42408955097198486, mae:0.4235873222351074, imp_mse:0.6394904836498457, imp_mae:0.5269987273147736, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.4176456928253174, mae:0.4231482744216919, imp_mse:0.6384063786131212, imp_mae:0.526561087061619, dtw:-999
+
+long_term_forecast_ETTh1_0.625_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.419418603181839, mae:0.42670124769210815, imp_mse:0.6395708844065666, imp_mae:0.5269120739794325, dtw:-999
+
+long_term_forecast_ETTh1_0.75_96_96_R_mean_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use mean interpolate method to imputate data after mask)
+mse:0.430869996547699, mae:0.4314357042312622, imp_mse:0.6396628108689155, imp_mae:0.5268882334917441, dtw:-999
+
+long_term_forecast_ETTh1_0.125_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4036566913127899, mae:0.41428065299987793, imp_mse:0.18243055640794764, imp_mae:0.2620597032979987, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4568542242050171, mae:0.4355292022228241, imp_mse:0.19808680654085917, imp_mae:0.27013866414968996, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4827135503292084, mae:0.44197022914886475, imp_mse:0.22166177878777185, imp_mae:0.28184523322116367, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4857911765575409, mae:0.4459690749645233, imp_mse:0.26470228160421055, imp_mae:0.3021911780895858, dtw:-999
+
+long_term_forecast_ETTh1_0.625_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4771278500556946, mae:0.45170286297798157, imp_mse:0.3465765268895133, imp_mae:0.3372250982057089, dtw:-999
+
+long_term_forecast_ETTh1_0.75_96_96_R_nearest_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use nearest interpolate method to imputate data after mask)
+mse:0.4950838088989258, mae:0.4547308683395386, imp_mse:0.505390247822493, imp_mae:0.40053782149635514, dtw:-999
+
+long_term_forecast_ETTh1_0.125_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.40316149592399597, mae:0.4137238562107086, imp_mse:0.09024134066341252, imp_mae:0.18941752094475703, dtw:-999
+
+long_term_forecast_ETTh1_0.25_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.465017706155777, mae:0.4377911686897278, imp_mse:0.1096649991412615, imp_mae:0.20509398955552058, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.44995424151420593, mae:0.43124625086784363, imp_mse:0.1392088328413237, imp_mae:0.22568234762754932, dtw:-999
+
+long_term_forecast_ETTh1_0.5_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.4422271251678467, mae:0.430846244096756, imp_mse:0.2003560439608563, imp_mae:0.2570147429560793, dtw:-999
+
+long_term_forecast_ETTh1_0.625_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.44909271597862244, mae:0.43481025099754333, imp_mse:0.3067463304975937, imp_mae:0.3067347653980913, dtw:-999
+
+long_term_forecast_ETTh1_0.75_96_96_R_linear_MICN_ETTh1_ftM_sl96_ll96_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.48947763442993164, mae:0.44978049397468567, imp_mse:0.6842694616523283, imp_mae:0.4033089046334398, dtw:-999
+
+long_term_forecast_weather_0.375_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.16832953691482544, mae:0.21611903607845306, imp_mse:0.033875475965791664, imp_mae:0.035600272397242165, dtw:-999
+
+long_term_forecast_weather_0.75_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.2000461220741272, mae:0.23821410536766052, imp_mse:0.0877697852453034, imp_mae:0.053823464487227926, dtw:-999
+
+long_term_forecast_weather_0.5_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.17124533653259277, mae:0.21847327053546906, imp_mse:0.04092196683382238, imp_mae:0.03893623210095509, dtw:-999
+
