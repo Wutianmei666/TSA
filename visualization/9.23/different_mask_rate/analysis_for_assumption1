@@ -1,0 +1,10 @@
+For Conclusion 1：
+ETTm1: TimesNet_TimesNet在低缺失率的时候满足，高缺失率时不满足；Transformer_TimesNet完全满足；MICN_MICN在低缺失率时完全违背(单独好于线性)，高缺失率时满足。
+
+ETTh1:TimesNet_TimesNet几乎完全违背；Transformer_TimesNet在低MR时，单独相对于线性相近或更好，但高MR时单独较优于线性；MICN_MICN在12-62MR完全满足，75MR时线性相对单独差很多。
+
+Weather：TimesNet_TimesNet在62MR时不满足，其余满足；Transformer_TimesNet在12、62和75不满足；MICN_MICN完全满足
+
+ECL:TimesNet_TimesNet在50、62和75MR下不满足。
+
+总结：在数据集上的不同模型，不能表现相同规律；同个模型在不同数据集下也不能表现相同规律。需要结合填补损失来验证进阶结论。
