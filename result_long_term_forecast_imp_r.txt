@@ -1040,3 +1040,19 @@ long_term_forecast_weather_0.125_96_96_R_no_MICN_custom_ftM_sl96_ll96_pl96_dm32_
 (use no interpolate method to imputate data after mask)
 mse:0.16792450845241547, mae:0.22571708261966705, imp_mse:0.6315067013028575, imp_mae:0.6048831664528583, dtw:-999
 
+long_term_forecast_ECL_0.375_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.15419697761535645, mae:0.25720563530921936, imp_mse:0.1338319929999224, imp_mae:0.2303032877837649, dtw:-999
+
+long_term_forecast_ECL_0.625_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.1710040271282196, mae:0.27351048588752747, imp_mse:0.31338899096717004, imp_mae:0.33821331288503564, dtw:-999
+
+long_term_forecast_ECL_0.5_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.15776818990707397, mae:0.2603081464767456, imp_mse:0.18994188831644768, imp_mae:0.27034238170577873, dtw:-999
+
+long_term_forecast_ECL_0.75_96_96_R_linear_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+(use linear interpolate method to imputate data after mask)
+mse:0.22222167253494263, mae:0.3189631998538971, imp_mse:0.6694851255750064, imp_mae:0.4717538108736832, dtw:-999
+
