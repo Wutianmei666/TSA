@@ -8,13 +8,7 @@ import random
 import numpy as np
 
 if __name__ == '__main__':
-    fix_seed = 2021
-    random.seed(fix_seed)
-    torch.manual_seed(fix_seed)
-    np.random.seed(fix_seed)
-
     parser = argparse.ArgumentParser(description='TimesNet')
-
     # basic config
     parser.add_argument('--task_name', type=str, required=True, default='long_term_forecast',
                         help='task name, options:[long_term_forecast, short_term_forecast, imputation, classification, anomaly_detection]')
@@ -24,15 +18,14 @@ if __name__ == '__main__':
                         help='model name, options: [Autoformer, Transformer, TimesNet]')
     parser.add_argument('--train_mode', type=int, required=True, default=0, 
                         help='train mode, options:[0(Individual),1(Joint),2(NO imputaion model)]')
-    
+    parser.add_argument('--seed',type=int,required=True,default=2021, help='different seed')
+
     # 不填补直接下游
     parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,mean,nearest,linear]')
 
     # 填补模型参数json文件
-    # parser.add_argument('imp_model',type=str,default="TimesNet",help="name of the imputation model")
     parser.add_argument('--imp_args_json', type=str, default="ImpModelArgs\ETT\TimesNet_ETTh1.json", help="args of the imputation model")
-    # 单独训练
-    # parser.add_argument('--imp_model_pt', type=str, default="checkpoints/imputation_ETTh1_mask_0.125_TimesNet_ETTh1_ftM_sl96_ll0_pl0_dm16_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0/Rcheckpoint.pth")
+
     # 联合训练
     parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
     parser.add_argument('--requires_grad',default=False, action='store_true', help='set lambda as a trainable paarameter')
@@ -160,6 +153,12 @@ if __name__ == '__main__':
 
     print('Args in experiment:')
     print_args(args)
+
+    # 固定args设定的种子，确保结果可复现
+    fix_seed = args.seed
+    random.seed(fix_seed)
+    torch.manual_seed(fix_seed)
+    np.random.seed(fix_seed)
 
     if args.task_name == 'long_term_forecast':
         if  args.train_mode == 0:

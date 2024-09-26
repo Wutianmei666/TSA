@@ -402,6 +402,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                         "填补MAE": imp_mae,
                         "下游MSE": mse,
                         "下游MAE": mae,
+                        "种子": self.args.seed,
                         "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
                         "是否汇入总表":0
                         }
