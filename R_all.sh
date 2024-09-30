@@ -1,4 +1,5 @@
-bash scripts/LTF_R/ETT/MICN_ETTm1.sh
-bash scripts/LTF_R/ETT/MICN_ETTh1.sh
-bash scripts/LTF_R/ECL/MICN.sh
-bash scripts/LTF_R/Weather/MICN.sh
+model=TimesNet
+bash scripts/LTF_R/ETT/${model}_ETTm1.sh
+bash scripts/LTF_R/ETT/${model}_ETTh1.sh
+bash scripts/LTF_R/ECL/${model}.sh
+bash scripts/LTF_R/Weather/${model}.sh

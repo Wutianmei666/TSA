@@ -18,7 +18,7 @@ if __name__ == '__main__':
                         help='model name, options: [Autoformer, Transformer, TimesNet]')
     parser.add_argument('--train_mode', type=int, required=True, default=0, 
                         help='train mode, options:[0(Individual),1(Joint),2(NO imputaion model)]')
-    parser.add_argument('--seed',type=int,required=True,default=2021, help='different seed')
+    parser.add_argument('--random_seed',type=int,required=True,default=2021, help='random_seed for package')
 
     # 不填补直接下游
     parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,mean,nearest,linear]')
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     print_args(args)
 
     # 固定args设定的种子，确保结果可复现
-    fix_seed = args.seed
+    fix_seed = args.random_seed
     random.seed(fix_seed)
     torch.manual_seed(fix_seed)
     np.random.seed(fix_seed)
