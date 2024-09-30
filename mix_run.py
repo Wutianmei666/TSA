@@ -23,8 +23,9 @@ if __name__ == '__main__':
     # 不填补直接下游
     parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,mean,nearest,linear]')
 
-    # 填补模型参数json文件
+    # 单独训练
     parser.add_argument('--imp_args_json', type=str, default="ImpModelArgs\ETT\TimesNet_ETTh1.json", help="args of the imputation model")
+    parser.add_argument('--imp_weight_path',type=str,default='',help='')
 
     # 联合训练
     parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
