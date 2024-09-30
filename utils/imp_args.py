@@ -20,5 +20,8 @@ def _make_imp_args(ds_args):
             if hasattr(imp_args, key):
                 setattr(imp_args, key, value)
         weight_path = weight_paths[str(imp_args.mask_rate)]
-    
+
+        if ds_args.imp_weight_path != '':
+            weight_path = ds_args.imp_weight_path
+            
     return imp_args, weight_path

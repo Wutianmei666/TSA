@@ -6,6 +6,7 @@ from utils.metrics import metric
 import torch
 import torch.nn as nn
 from torch import optim
+import pandas as pd
 import os
 import time
 import copy
@@ -35,6 +36,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         imp_args, weight_path = _make_imp_args(self.args)
         imp_model = self.model_dict[imp_args.model].Model(imp_args).float()
 
+        assert weight_path != '', '需加载填补模型权重'
         # 装载填补模型权重
         imp_model.load_state_dict(torch.load(weight_path))
         imp_model.to(self.device)
@@ -349,5 +351,28 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
         # np.save(folder_path + 'pred.npy', preds)
         # np.save(folder_path + 'true.npy', trues)
+
+
+        # 写入csv文件中,需要保存的参数如下
+        # """ 数据集:self.args.dataset  下游模型:self.args.model 填补方法:self.args.interpolate 掩码率:self.args.mask_rate(0.125)
+        #     填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
+        #     加入总结果:0(1)"""
+
+        # df = pd.read_csv('R.csv')
+        # result_dict = {
+        #                 "数据集":self.args.dataset,
+        #                 "下游模型": self.args.model,
+        #                 "填补方法": self.args.interpolate,
+        #                 "掩码率":str(self.args.mask_rate*100)+'%',
+        #                 "填补MSE": imp_mse,
+        #                 "填补MAE": imp_mae,
+        #                 "下游MSE": mse,
+        #                 "下游MAE": mae,
+        #                 "种子": self.args.seed,
+        #                 "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
+        #                 "是否汇入总表":0
+        #                 }
+        # df = pd.concat([df,pd.DataFrame([result_dict])],ignore_index=True)
+        # df.to_csv('R.csv',index=False)
 
         return
