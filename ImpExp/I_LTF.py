@@ -4,6 +4,7 @@ from utils.imp_args import _make_imp_args
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
 from utils.metrics import metric
 import torch
+import datetime
 import torch.nn as nn
 from torch import optim
 import pandas as pd
@@ -22,8 +23,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_I, self).__init__(args)
         self.args = args
-        self.imp_model, self.imp_model_name = self._bulid_imputation_model()
-        print("Using {} to imputate data".format(self.imp_model_name))
+        self.imp_model, self.img_args = self._bulid_imputation_model()
+        print("Using {} to imputate data".format(self.imp_args.model))
 
     def _build_model(self):
         model = self.model_dict[self.args.model].Model(self.args).float()
@@ -41,7 +42,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         imp_model.load_state_dict(torch.load(weight_path))
         imp_model.to(self.device)
         imp_model.eval()
-        return imp_model, imp_args.model
+        return imp_model, imp_args
 
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
@@ -232,7 +233,9 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         if test:
             print('loading model')
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
-
+        
+        imp_mse = []
+        imp_mae = []
         preds = []
         trues = []
         folder_path = './test_results/' + setting + '/'
@@ -241,11 +244,16 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
         self.model.eval()
         with torch.no_grad():
+            mse_fn = nn.MSELoss()
+            mae_fn = nn.L1Loss()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x_raw = batch_x_raw.float().to(self.device)
                 batch_y_raw = batch_y_raw.float().to(self.device)
                 batch_x_mark = batch_x_mark.float().to(self.device)
                 batch_y_mark = batch_y_mark.float().to(self.device)
+
+                ##  复制一个batch_x用于后续计算填补损失
+                batch_x_raw_clone = batch_x_raw.clone().detach().cpu()
 
                 ## 填补
                 # random mask
@@ -261,6 +269,8 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
+                # 复制一个
+                batch_x_imp_clone = batch_x_imp.clone().detach().cpu()
                 # 将batch_x_imp属于label_len部分赋值给batch_y
                 #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
                 
@@ -298,6 +308,9 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
                 pred = outputs
                 true = batch_y_raw
 
+                imp_mae.append(mae_fn(batch_x_raw_clone[mask==0],batch_x_imp_clone[mask==0]).item())
+                imp_mse.append(mse_fn(batch_x_raw_clone[mask==0],batch_x_imp_clone[mask==0]).item())
+
                 preds.append(pred)
                 trues.append(true)
                 # if i % 20 == 0:
@@ -317,6 +330,10 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         print('test shape:', preds.shape, trues.shape)
+
+        # calculate imputaion loss
+        imp_mae = np.mean(imp_mae)
+        imp_mse = np.mean(imp_mse)
 
         # result save
         folder_path = './results/' + setting + '/'
@@ -343,7 +360,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f = open("result_long_term_forecast_imp_i.txt", 'a')
         f.write(setting + "  \n")
-        f.write("Use {} to imputate data \n".format(self.imp_model_name))
+        f.write("Use {} to imputate data \n".format(self.imp_args.model))
         f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f.write('\n')
         f.write('\n')
@@ -354,25 +371,36 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
 
 
         # 写入csv文件中,需要保存的参数如下
-        # """ 数据集:self.args.dataset  下游模型:self.args.model 填补方法:self.args.interpolate 掩码率:self.args.mask_rate(0.125)
-        #     填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
-        #     加入总结果:0(1)"""
+        """ 数据集:self.args.dataset  
+            填补模型: self.imp_args.model
+            下游模型:self.args.model 
+            掩码率:str(self.args.mask_rate*100)+'%',
+            填补mse:imp_mse ,
+            填补mae:imp_mae,
+            下游mse:mse ,
+            下游mae:mae ,
+            "种子": self.args.random_seed,
+            "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
+            "是否汇入总表":0
+        """
 
-        # df = pd.read_csv('R.csv')
-        # result_dict = {
-        #                 "数据集":self.args.dataset,
-        #                 "下游模型": self.args.model,
-        #                 "填补方法": self.args.interpolate,
-        #                 "掩码率":str(self.args.mask_rate*100)+'%',
-        #                 "填补MSE": imp_mse,
-        #                 "填补MAE": imp_mae,
-        #                 "下游MSE": mse,
-        #                 "下游MAE": mae,
-        #                 "种子": self.args.seed,
-        #                 "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
-        #                 "是否汇入总表":0
-        #                 }
-        # df = pd.concat([df,pd.DataFrame([result_dict])],ignore_index=True)
-        # df.to_csv('R.csv',index=False)
+        df = pd.read_csv('I.csv')
+        result_dict = {
+                        "数据集":self.args.dataset,
+                        "填补模型": self.imp_args.model,
+                        "填补模型d_model": self.imp_args.d_model,
+                        "填补模型d_ff":self.imp_args.d_ff,
+                        "下游模型": self.args.model, 
+                        "掩码率":str(self.args.mask_rate*100)+'%',
+                        "填补MSE":imp_mse ,
+                        "填补MAE":imp_mae,
+                        "下游MSE":mse ,
+                        "下游MAE":mae ,
+                        "种子": self.args.random_seed,
+                        "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
+                        "是否汇入总表":0
+                        }
+        df = pd.concat([df,pd.DataFrame([result_dict])],ignore_index=True)
+        df.to_csv('I.csv',index=False)
 
         return
