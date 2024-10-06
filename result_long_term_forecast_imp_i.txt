@@ -344,3 +344,51 @@ long_term_forecast_ECL_0.75_96_96_I_MICN_custom_ftM_sl96_ll96_pl96_dm256_nh8_el2
 Use MICN to imputate data 
 mse:0.19491317868232727, mae:0.2979636788368225, dtw:-999
 
+long_term_forecast_ETTm1_0.375_96_96_I_MIT_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.34101977944374084, mae:0.3775056004524231, dtw:-999
+
+long_term_forecast_ETTm1_0.375_96_96_I_ORT_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.3432052433490753, mae:0.37804561853408813, dtw:-999
+
+long_term_forecast_ETTm1_0.375_96_96_I_Joint_TimesNet_ETTm1_ftM_sl96_ll48_pl96_dm64_nh8_el2_dl1_df64_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.3414781987667084, mae:0.37770283222198486, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_MIT_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.41835835576057434, mae:0.42500099539756775, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_ORT_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.41780462861061096, mae:0.4278620779514313, dtw:-999
+
+long_term_forecast_ETTh1_0.375_96_96_I_Joint_TimesNet_ETTh1_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.41539305448532104, mae:0.4239825904369354, dtw:-999
+
+long_term_forecast_ECL_0.375_96_96_I_MIT_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.17447461187839508, mae:0.2774161100387573, dtw:-999
+
+long_term_forecast_ECL_0.375_96_96_I_ORT_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.17503444850444794, mae:0.278636634349823, dtw:-999
+
+long_term_forecast_weather_0.375_96_96_I_MIT_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.17289355397224426, mae:0.2201027274131775, dtw:-999
+
+long_term_forecast_weather_0.375_96_96_I_ORT_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.16920986771583557, mae:0.21848732233047485, dtw:-999
+
+long_term_forecast_ECL_0.375_96_96_I_Joint_TimesNet_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.16910643875598907, mae:0.2729492485523224, dtw:-999
+
+long_term_forecast_weather_0.375_96_96_I_Joint_TimesNet_custom_ftM_sl96_ll48_pl96_dm32_nh8_el2_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0  
+Use TimesNet to imputate data 
+mse:0.17197497189044952, mae:0.2197028398513794, dtw:-999
+
