@@ -364,12 +364,16 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
         """ 数据集:self.args.dataset  下游模型:self.args.model 填补方法:self.args.interpolate 掩码率:self.args.mask_rate(0.125)
             填补mse:imp_mse 填补mae:imp_mae 下游mse:mse 下游mae:mae 日期:datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S')
             加入总结果:0(1)"""
-
+        method_dict = {
+                        'mean':'均值',
+                        'nearest':'最近邻',
+                        'linear':'线性'
+        }
         df = pd.read_csv('R.csv')
         result_dict = {
                         "数据集":self.args.dataset,
                         "下游模型": self.args.model,
-                        "填补方法": self.args.interpolate,
+                        "填补方法": method_dict[self.args.interpolate],
                         "掩码率":str(self.args.mask_rate*100)+'%',
                         "填补MSE": imp_mse,
                         "填补MAE": imp_mae,
