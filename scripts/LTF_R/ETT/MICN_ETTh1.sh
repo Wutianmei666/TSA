@@ -1,4 +1,5 @@
 export CUDA_VISIBLE_DEVICES=0
+random_seed=2024
 model_name=MICN
 seq_len=96
 label_len=96
@@ -8,11 +9,13 @@ d_layers=1
 d_model=512
 d_ff=2048
 top_k=5
-for interpolate in no mean nearest linear
+
+for interpolate in mean nearest linear
 do
     for mask_rate in  0.125 0.25 0.375 0.5 0.625 0.75
     do
         python -u mix_run.py \
+          --random_seed $random_seed \
           --task_name long_term_forecast \
           --train_mode 2 \
           --mask_rate $mask_rate \
