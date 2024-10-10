@@ -21,6 +21,12 @@ def _make_imp_args(ds_args):
                 setattr(imp_args, key, value)
         weight_path = weight_paths[str(imp_args.mask_rate)]
 
+        # 若给定填补模型参数，则使用给定值
+        if ds_args.imp_model_d_model != -1 and ds_args.imp_model_d_ff != -1 :
+            imp_args.d_model = ds_args.imp_model_d_model
+            imp_args.d_ff = ds_args.imp_model_d_ff
+            
+        # 若给定填补模型权重路径，则直接使用
         if ds_args.imp_weight_path != '':
             weight_path = ds_args.imp_weight_path
             
