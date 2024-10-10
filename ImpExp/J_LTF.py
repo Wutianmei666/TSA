@@ -42,8 +42,8 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_J, self).__init__(args)
         self.args = args
-        self.imp_model, self.imp_model_name = self._bulid_imputation_model()
-        print("Using {} to imputate data".format(self.imp_model_name))
+        self.imp_model, self.imp_args = self._bulid_imputation_model()
+        print("Using {} to imputate data".format(self.imp_args.model))
 
         self._lambda = self._build_lambda()
         self.activate_fn = nn.ReLU()
@@ -60,7 +60,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         if self.args.use_multi_gpu and self.args.use_gpu:
             imp_model = nn.DataParallel(imp_model,device_ids=self.args.device_ids)
         imp_model.to(self.device)
-        return imp_model, imp_args.model
+        return imp_model, imp_args
 
     def _build_lambda(self):
         _lambda = torch.FloatTensor([self.args._lambda]).to(self.device)
@@ -424,7 +424,7 @@ class Exp_Long_Term_Forecast_Imp_J(Exp_Basic):
         f = open("result_long_term_forecast_imp_j.txt", 'a')
         f.write(setting + "  \n")
 
-        f.write('(imp_model:{}, initial lr:{}, initial imp lr: {} lambda:{}({}), lradj:{})\n'.format(self.imp_model_name,
+        f.write('(imp_model:{}, initial lr:{}, initial imp lr: {} lambda:{}({}), lradj:{})\n'.format(self.imp_args.model,
                                                                                                     self.args.learning_rate, 
                                                                                                     self.args.imp_lr,
                                                                                                     self._lambda.item(), 

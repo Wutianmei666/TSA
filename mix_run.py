@@ -28,6 +28,8 @@ if __name__ == '__main__':
     parser.add_argument('--imp_weight_path',type=str,default='',help='')
 
     # 联合训练
+    parser.add_argument('--imp_model_d_model',type=int,default=-1,help='dimension of the imputation model')
+    parser.add_argument('--imp_model_d_ff',type=int,default=-1,help='ff dimension of the imputation model')
     parser.add_argument('--_lambda',type=float,default=0,help='the weight of the imputation loss')
     parser.add_argument('--requires_grad',default=False, action='store_true', help='set lambda as a trainable paarameter')
     parser.add_argument('--imp_lr',type=float, default=0.001,help='initial learning rate for imputation model')
@@ -176,7 +178,7 @@ if __name__ == '__main__':
     elif args.task_name == 'classification':
         pass
 
-
+    test_dict={0:'I',1:'J',2:'R'}
     if args.is_training:
         for ii in range(args.itr):
             # setting record of experiments
@@ -184,17 +186,17 @@ if __name__ == '__main__':
             setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_expand{}_dc{}_fc{}_eb{}_dt{}_{}_{}'.format(
                 args.task_name,
                 args.model_id,
-                args.model,
+                '['+exp.imp_args.model+'_'+exp.args.model+']' if args.train_mode == 0 or args.train_mode == 1 else '['+args.model+']',
                 args.data,
                 args.features,
                 args.seq_len,
                 args.label_len,
                 args.pred_len,
-                args.d_model,
+                '[imp'+str(exp.imp_args.d_model)+'ds'+str(exp.args.d_model)+']' if args.train_mode == 0 or args.train_mode == 1 else '['+str(args.d_model)+']',
                 args.n_heads,
                 args.e_layers,
                 args.d_layers,
-                args.d_ff,
+                '[imp'+str(exp.imp_args.d_ff)+'ds'+str(exp.args.d_ff)+']' if args.train_mode == 0 or args.train_mode == 1 else '['+str(args.d_ff)+']',
                 args.expand,
                 args.d_conv,
                 args.factor,
