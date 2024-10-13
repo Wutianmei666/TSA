@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--random_seed',type=int,required=True,default=2021, help='random_seed for package')
 
     # 不填补直接下游
-    parser.add_argument('--interpolate',type=str,default='no',help='interpolate methods after mask, options:[no,mean,nearest,linear]')
+    parser.add_argument('--interpolate',type=str,default='mean',help='interpolate methods after mask, options:[mean,nearest,linear]')
 
     # 单独训练
     parser.add_argument('--imp_args_json', type=str, default="ImpModelArgs\ETT\TimesNet_ETTh1.json", help="args of the imputation model")
@@ -55,6 +55,7 @@ if __name__ == '__main__':
 
     # inputation task
     parser.add_argument('--mask_rate', required=True, type=float, default=0.25, help='mask ratio')
+    parser.add_argument('--imp_method',type=str,default='',help='method type to impute the data ,options:[interpolate,DL]')
 
     # anomaly detection task
     parser.add_argument('--anomaly_ratio', type=float, default=0.25, help='prior anomaly ratio (%)')
