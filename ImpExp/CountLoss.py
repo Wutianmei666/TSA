@@ -15,6 +15,7 @@ import warnings
 import numpy as np
 from utils.dtw_metric import dtw,accelerated_dtw
 from utils.augmentation import run_augmentation,run_augmentation_single
+from utils.mask_padding import *
 
 warnings.filterwarnings('ignore')
 
@@ -23,13 +24,10 @@ class Exp_Count_Imp_Loss(Exp_Basic):
     def __init__(self, args):
         super(Exp_Count_Imp_Loss, self).__init__(args)
         self.args = args
-        self.imp_model, self.img_args = self._bulid_imputation_model()
+        self._build_imputation_method()
         print("Using {} to imputate data".format(self.imp_args.model))
 
-    def _build_model(self):
-        return
-
-    def _bulid_imputation_model(self):
+    def _build_imputation_model(self):
         imp_args, weight_path = _make_imp_args(self.args)
         imp_model = self.model_dict[imp_args.model].Model(imp_args).float()
 
@@ -39,6 +37,29 @@ class Exp_Count_Imp_Loss(Exp_Basic):
         imp_model.to(self.device)
         imp_model.eval()
         return imp_model, imp_args
+
+
+    def _build_imputation_method(self):
+        assert self.args.imp_method in ['interpolate','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
+        if self.args.imp_method == 'interpolate':
+            if self.args.interpolate == 'mean' :
+                self.method_type = 'mean'
+                self.masked_mean = masked_mean()
+            else :
+                self.method_type = self.args.interpolate
+                self.interpolate = interpolate() 
+        else:
+            self.method_type = 'DL'
+            self.imputation_model, _ = self._build_imputation_model()
+    
+    def imputation_method(self,batch_x,batch_x_mark,mask,device):
+        if self.method_type == 'mean' :
+            return masked_mean(batch_x,mask)
+        elif self.method_type == 'DL' :
+            return self.imputation_model(batch_x,batch_x_mark,None,None,mask)
+        else:
+            assert self.method_type in ['nearest','linear']
+            return self.interpolate(batch_x,device,self.method_type)
 
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
