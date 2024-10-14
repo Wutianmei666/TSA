@@ -2,9 +2,10 @@ from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
 from utils.imp_args import _make_imp_args
 from utils.tools import EarlyStopping, adjust_learning_rate, visual
-from utils.metrics import metric
+from utils.metrics import MSE,MAE
 import torch
 import datetime
+import math
 import torch.nn as nn
 from torch import optim
 import pandas as pd
@@ -78,32 +79,39 @@ class Exp_Count_Imp_Loss(Exp_Basic):
     def train(self, setting):
         return 
 
+    def build_position_list(self,mask,max_consecutive_length):
+        """
+        注释以后写
+        """
+        B,T,N = mask.shape
+        position_list = [torch.zeros((B,T,N),dtype=bool) for i in range(max_consecutive_length+1)]
+        for b in range(B):
+            zero_start = None
+            for t in range(T):
+                if mask[b,t,0] == 0:
+                    if zero_start == None :
+                        zero_start = t
+                else :
+                    if zero_start is not None :
+                        position_list[t-zero_start][b,zero_start:t,:] = True
+                        zero_start = None
+            if zero_start is not None:
+                print(zero_start)
+                position_list[T-zero_start][b,zero_start:T+1,:] = True
+        return position_list
+
     def test(self, setting, test=0):
         test_data, test_loader = self._get_data(flag='test')
-        # if test:
-        #     print('loading model')
-        #     self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
-        
-        imp_mse = []
-        imp_mae = []
-        preds = []
+        max_consecutive_length = math.ceil(T*self.args.mask_rate)
+        preds= []
         trues = []
-        folder_path = './test_results/' + setting + '/'
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
-
-        self.model.eval()
+        mse_results = []
+        mae_results = []
         with torch.no_grad():
             mse_fn = nn.MSELoss()
             mae_fn = nn.L1Loss()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x_raw = batch_x_raw.float().to(self.device).detach()
-                batch_y_raw = batch_y_raw.float().to(self.device).detach()
-                batch_x_mark = batch_x_mark.float().to(self.device).detach()
-                batch_y_mark = batch_y_mark.float().to(self.device).detach()
-
-                ##  复制一个batch_x用于后续计算填补损失
-                batch_x_raw_clone = batch_x_raw.clone().cpu()
 
                 ## 填补
                 # random mask
@@ -112,101 +120,32 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
                 mask.expand(B,T,N)
-                batch_x_raw = batch_x_raw.masked_fill(mask == 0, 0)
 
-                # 输入
-                batch_x_imp = self.imputation_method(batch_x_raw,batch_x_mark,mask,self.device)
+                position_list = self.build_position_list(mask,max_consecutive_length)
+                inp = batch_x_raw.masked_fill(mask == 0, 0)
+
+                # 输出
+                batch_x_imp = self.imputation_method(inp,batch_x_mark,mask,self.device)
                 batch_x_imp = batch_x_imp.cpu()
-                # 补回去被填充的部分
-                batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
-
-                # 复制一个
-                batch_x_imp_clone = batch_x_imp.clone().detach().cpu()
-                # 将batch_x_imp属于label_len部分赋值给batch_y
-                #batch_y_imp = torch.cat([batch_x_imp[:,-self.args.label_len:,:],batch_y_raw[:,-self.args.pred_len:,:]],dim=1).float().to(self.device)
                 
-                ## 预测
-                # decoder input
-                dec_inp = torch.zeros_like(batch_y_raw[:, -self.args.pred_len:, :]).float()
-                dec_inp = torch.cat([batch_x_imp[:, -self.args.label_len:, :], dec_inp], dim=1).float().to(self.device)
-
-                # encoder - decoder
-                if self.args.use_amp:
-                    with torch.cuda.amp.autocast():
-                        if self.args.output_attention:
-                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
-                        else:
-                            outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
-                else:
-                    if self.args.output_attention:
-                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)[0]
-                    else:
-                        outputs = self.model(batch_x_imp, batch_x_mark, dec_inp, batch_y_mark)
-                f_dim = -1 if self.args.features == 'MS' else 0
-                outputs = outputs[:, -self.args.pred_len:, :]
-                batch_y_raw = batch_y_raw[:, -self.args.pred_len:, :].to(self.device)
-                outputs = outputs.detach().cpu().numpy()
-                batch_y_raw = batch_y_raw.detach().cpu().numpy()
-
-                if test_data.scale and self.args.inverse:
-                    shape = outputs.shape
-                    outputs = test_data.inverse_transform(outputs.squeeze(0)).reshape(shape)
-                    batch_y_raw = test_data.inverse_transform(batch_y_raw.squeeze(0)).reshape(shape)
+                for consecutive_length in range(1,max_consecutive_length+1):
+                    preds.append(np.array(batch_x_imp[position_list[consecutive_length]]))
+                    trues.append(np.array(batch_x_raw[position_list[consecutive_length]]))
         
-                outputs = outputs[:, :, f_dim:]
-                batch_y_raw = batch_y_raw[:, :, f_dim:]
-
-                pred = outputs
-                true = batch_y_raw
-
-                imp_mae.append(mae_fn(batch_x_raw_clone[mask==0],batch_x_imp_clone[mask==0]).item())
-                imp_mse.append(mse_fn(batch_x_raw_clone[mask==0],batch_x_imp_clone[mask==0]).item())
-
-                preds.append(pred)
-                trues.append(true)
-                # if i % 20 == 0:
-                #     raw = batch_x_raw.detach().cpu().numpy()
-                #     input = batch_x_imp.detach().cpu().numpy()
-                #     if test_data.scale and self.args.inverse:
-                #         shape = input.shape
-                #         raw = test_data.inverse_transform(raw.squeeze(0)).reshape(shape)
-                #         input = test_data.inverse_transform(input.squeeze(0)).reshape(shape)
-                #     gt = np.concatenate((raw[0, :, -1], true[0, :, -1]), axis=0)
-                #     pd = np.concatenate((input[0, :, -1], pred[0, :, -1]), axis=0)
-                #     visual(gt, pd, os.path.join(folder_path, str(i) + '.pdf'))
-
-        preds = np.array(preds)
-        trues = np.array(trues)
-        print('test shape:', preds.shape, trues.shape)
-        preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
-        trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
-        print('test shape:', preds.shape, trues.shape)
-
-        # calculate imputaion loss
-        imp_mae = np.mean(imp_mae)
-        imp_mse = np.mean(imp_mse)
+        # 计算每个间隔的填补损失
+        for i in range(max_consecutive_length):
+            if preds[i].size != 0:
+                mse_results.append(MSE(preds[i],trues[i]))
+                mae_results.append(MAE(preds[i],trues[i]))
+            else :
+                mse_results.append(-1)
+                mae_results.append(-1)
 
         # result save
         folder_path = './results/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         
-        # dtw calculation
-        if self.args.use_dtw:
-            dtw_list = []
-            manhattan_distance = lambda x, y: np.abs(x - y)
-            for i in range(preds.shape[0]):
-                x = preds[i].reshape(-1,1)
-                y = trues[i].reshape(-1,1)
-                if i % 100 == 0:
-                    print("calculating dtw iter:", i)
-                d, _, _, _ = accelerated_dtw(x, y, dist=manhattan_distance)
-                dtw_list.append(d)
-            dtw = np.array(dtw_list).mean()
-        else:
-            dtw = -999
-            
-
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         f = open("result_long_term_forecast_imp_i.txt", 'a')
