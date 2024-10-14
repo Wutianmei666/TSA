@@ -50,7 +50,7 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                 self.interpolate = interpolate() 
         else:
             self.method_type = 'DL'
-            self.imputation_model, _ = self._build_imputation_model()
+            self.imputation_model, self.imp_args = self._build_imputation_model()
     
     def imputation_method(self,batch_x,batch_x_mark,mask,device):
         if self.method_type == 'mean' :
@@ -108,8 +108,6 @@ class Exp_Count_Imp_Loss(Exp_Basic):
         mse_results = []
         mae_results = []
         with torch.no_grad():
-            mse_fn = nn.MSELoss()
-            mae_fn = nn.L1Loss()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x_raw = batch_x_raw.float().to(self.device).detach()
 
@@ -142,55 +140,13 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                 mae_results.append(-1)
 
         # result save
-        folder_path = './results/' + setting + '/'
+        folder_path = './imp_loss_count'+'/'+self.args.dataset+'_'+self.args.pred_len+'_'+self.args.mask_rate+'/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         
-        mae, mse, rmse, mape, mspe = metric(preds, trues)
-        print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f = open("result_long_term_forecast_imp_i.txt", 'a')
-        f.write(setting + "  \n")
-        f.write("Use {} to imputate data \n".format(self.imp_args.model))
-        f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f.write('\n')
-        f.write('\n')
-        f.close()
-        # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
-        # np.save(folder_path + 'pred.npy', preds)
-        # np.save(folder_path + 'true.npy', trues)
 
-
-        # 写入csv文件中,需要保存的参数如下
-        """ 数据集:self.args.dataset  
-            填补模型: self.imp_args.model
-            下游模型:self.args.model 
-            掩码率:str(self.args.mask_rate*100)+'%',
-            填补mse:imp_mse ,
-            填补mae:imp_mae,
-            下游mse:mse ,
-            下游mae:mae ,
-            "种子": self.args.random_seed,
-            "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
-            "是否汇入总表":0
-        """
-
-        df = pd.read_csv('I.csv')
-        result_dict = {
-                        "数据集":self.args.dataset,
-                        "填补模型": self.imp_args.model,
-                        "填补模型d_model": self.imp_args.d_model,
-                        "填补模型d_ff":self.imp_args.d_ff,
-                        "下游模型": self.args.model, 
-                        "掩码率":str(self.args.mask_rate*100)+'%',
-                        "填补MSE":imp_mse ,
-                        "填补MAE":imp_mae,
-                        "下游MSE":mse ,
-                        "下游MAE":mae ,
-                        "种子": self.args.random_seed,
-                        "日期":datetime.datetime.now().strftime('%Y-%m-%d  %H:%M:%S'),
-                        "是否汇入总表":0
-                        }
-        df = pd.concat([df,pd.DataFrame([result_dict])],ignore_index=True)
-        df.to_csv('I.csv',index=False)
+        type_path = self.imp_args.model if self.method_type =='DL' else self.method_type + '/'
+        np.save(folder_path + type_path + 'mse.npy', np.array(mse_results))
+        np.save(folder_path + type_path + 'mae.npy',np.array(mae_results))
 
         return
