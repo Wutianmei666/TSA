@@ -38,7 +38,6 @@ class Exp_Count_Imp_Loss(Exp_Basic):
         imp_model.eval()
         return imp_model, imp_args
 
-
     def _build_imputation_method(self):
         assert self.args.imp_method in ['interpolate','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
         if self.args.imp_method == 'interpolate':
@@ -98,25 +97,26 @@ class Exp_Count_Imp_Loss(Exp_Basic):
             mse_fn = nn.MSELoss()
             mae_fn = nn.L1Loss()
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
-                batch_x_raw = batch_x_raw.float().to(self.device)
-                batch_y_raw = batch_y_raw.float().to(self.device)
-                batch_x_mark = batch_x_mark.float().to(self.device)
-                batch_y_mark = batch_y_mark.float().to(self.device)
+                batch_x_raw = batch_x_raw.float().to(self.device).detach()
+                batch_y_raw = batch_y_raw.float().to(self.device).detach()
+                batch_x_mark = batch_x_mark.float().to(self.device).detach()
+                batch_y_mark = batch_y_mark.float().to(self.device).detach()
 
                 ##  复制一个batch_x用于后续计算填补损失
-                batch_x_raw_clone = batch_x_raw.clone().detach().cpu()
+                batch_x_raw_clone = batch_x_raw.clone().cpu()
 
                 ## 填补
                 # random mask
                 B, T, N = batch_x_raw.shape
-                mask = torch.rand((B, T, N)).to(self.device)
+                mask = torch.rand((B, T, 1)).to(self.device)
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
-                inp = batch_x_raw.masked_fill(mask == 0, 0)
+                mask.expand(B,T,N)
+                batch_x_raw = batch_x_raw.masked_fill(mask == 0, 0)
 
                 # 输入
-                batch_x_imp = self.imp_model(inp, batch_x_mark, None, None, mask)
-
+                batch_x_imp = self.imputation_method(batch_x_raw,batch_x_mark,mask,self.device)
+                batch_x_imp = batch_x_imp.cpu()
                 # 补回去被填充的部分
                 batch_x_imp = batch_x_raw*mask + batch_x_imp*(1-mask)
 
