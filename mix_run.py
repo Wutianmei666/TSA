@@ -3,6 +3,7 @@ import torch
 from ImpExp.I_LTF import Exp_Long_Term_Forecast_Imp_I
 from ImpExp.J_LTF import Exp_Long_Term_Forecast_Imp_J
 from ImpExp.R_LTF import Exp_Long_Term_Forecast_Imp_R
+from ImpExp.CountLoss import Exp_Count_Imp_Loss
 from utils.print_args import print_args
 import random
 import numpy as np
@@ -55,7 +56,7 @@ if __name__ == '__main__':
 
     # inputation task
     parser.add_argument('--mask_rate', required=True, type=float, default=0.25, help='mask ratio')
-    parser.add_argument('--imp_method',type=str,default='',help='method type to impute the data ,options:[interpolate,DL]')
+    parser.add_argument('--imp_method',type=str,default='',help='method type to impute the data ,options:[mean,nearest,linear,DL]')
 
     # anomaly detection task
     parser.add_argument('--anomaly_ratio', type=float, default=0.25, help='prior anomaly ratio (%)')
@@ -178,7 +179,9 @@ if __name__ == '__main__':
         pass
     elif args.task_name == 'classification':
         pass
-
+    elif args.task_name == 'count_imp_loss':
+        Exp = Exp_Count_Imp_Loss
+    
     test_dict={0:'I',1:'J',2:'R'}
     if args.is_training:
         for ii in range(args.itr):

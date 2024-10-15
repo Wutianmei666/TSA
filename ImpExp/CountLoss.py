@@ -24,9 +24,11 @@ warnings.filterwarnings('ignore')
 class Exp_Count_Imp_Loss(Exp_Basic):
     def __init__(self, args):
         super(Exp_Count_Imp_Loss, self).__init__(args)
+        assert self.args.imp_method in ['mean','nearest','linear','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
         self.args = args
-        self._build_imputation_method()
-        print("Using {} to imputate data".format(self.imp_args.model))
+        if self.method_type == 'DL':
+            self.imputation_model, self.imp_args = self._build_imputation_model()
+        print("Using {} to imputate data".format(self.method_type))
 
     def _build_imputation_model(self):
         imp_args, weight_path = _make_imp_args(self.args)
@@ -39,18 +41,18 @@ class Exp_Count_Imp_Loss(Exp_Basic):
         imp_model.eval()
         return imp_model, imp_args
 
-    def _build_imputation_method(self):
-        assert self.args.imp_method in ['interpolate','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
-        if self.args.imp_method == 'interpolate':
-            if self.args.interpolate == 'mean' :
-                self.method_type = 'mean'
-                self.masked_mean = masked_mean()
-            else :
-                self.method_type = self.args.interpolate
-                self.interpolate = interpolate() 
-        else:
-            self.method_type = 'DL'
-            self.imputation_model, self.imp_args = self._build_imputation_model()
+    # def _build_imputation_method(self):
+    #     assert self.args.imp_method in ['interpolate','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
+    #     if self.args.imp_method == 'interpolate':
+    #         if self.args.interpolate == 'mean' :
+    #             self.method_type = 'mean'
+    #             self.masked_mean = masked_mean()
+    #         else :
+    #             self.method_type = self.args.interpolate
+    #             self.interpolate = interpolate() 
+    #     else:
+    #         self.method_type = 'DL'
+    #         self.imputation_model, self.imp_args = self._build_imputation_model()
     
     def imputation_method(self,batch_x,batch_x_mark,mask,device):
         if self.method_type == 'mean' :
@@ -59,7 +61,7 @@ class Exp_Count_Imp_Loss(Exp_Basic):
             return self.imputation_model(batch_x,batch_x_mark,None,None,mask)
         else:
             assert self.method_type in ['nearest','linear']
-            return self.interpolate(batch_x,device,self.method_type)
+            return interpolate(batch_x,device,self.method_type)
 
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
@@ -140,7 +142,7 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                 mae_results.append(-1)
 
         # result save
-        folder_path = './imp_loss_count'+'/'+self.args.dataset+'_'+self.args.pred_len+'_'+self.args.mask_rate+'/'
+        folder_path = './count_imp_loss'+'/'+self.args.dataset+'_'+self.args.pred_len+'_'+self.args.mask_rate+'/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         
