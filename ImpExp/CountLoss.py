@@ -26,17 +26,18 @@ class Exp_Count_Imp_Loss(Exp_Basic):
         super(Exp_Count_Imp_Loss, self).__init__(args)
         assert self.args.imp_method in ['mean','nearest','linear','DL'], '选择的填补方法不合规定,可选的有:interpolate,DL'
         self.args = args
-        if self.method_type == 'DL':
+        
+        if self.args.imp_method == 'DL':
             self.imputation_model, self.imp_args = self._build_imputation_model()
-        print("Using {} to imputate data".format(self.method_type))
+        print("Using {} to imputate data".format(self.args.imp_method))
 
     def _build_imputation_model(self):
-        imp_args, weight_path = _make_imp_args(self.args)
+        imp_args, imp_model_weight_path = _make_imp_args(self.args)
         imp_model = self.model_dict[imp_args.model].Model(imp_args).float()
 
-        assert weight_path != '', '需加载填补模型权重'
+        assert imp_model_weight_path != '', '需加载填补模型权重'
         # 装载填补模型权重
-        imp_model.load_state_dict(torch.load(weight_path))
+        imp_model.load_state_dict(torch.load(imp_model_weight_path))
         imp_model.to(self.device)
         imp_model.eval()
         return imp_model, imp_args
@@ -54,15 +55,22 @@ class Exp_Count_Imp_Loss(Exp_Basic):
     #         self.method_type = 'DL'
     #         self.imputation_model, self.imp_args = self._build_imputation_model()
     
-    def imputation_method(self,batch_x,batch_x_mark,mask,device):
-        if self.method_type == 'mean' :
+    def imputation_method(self,batch_x,batch_x_mark,mask):
+        if self.args.imp_method == 'mean' :
             return masked_mean(batch_x,mask)
-        elif self.method_type == 'DL' :
+        elif self.args.imp_method == 'DL' :
             return self.imputation_model(batch_x,batch_x_mark,None,None,mask)
         else:
-            assert self.method_type in ['nearest','linear']
-            return interpolate(batch_x,device,self.method_type)
+            assert self.args.imp_method in ['nearest','linear']
+            return interpolate(batch_x,self.args.imp_method)
+        
+    def _build_model(self):
+        model = self.model_dict[self.args.model].Model(self.args).float()
 
+        if self.args.use_multi_gpu and self.args.use_gpu:
+            model = nn.DataParallel(model, device_ids=self.args.device_ids)
+        return model
+    
     def _get_data(self, flag):
         data_set, data_loader = data_provider(self.args, flag)
         return data_set, data_loader
@@ -98,36 +106,40 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                         position_list[t-zero_start][b,zero_start:t,:] = True
                         zero_start = None
             if zero_start is not None:
-                print(zero_start)
                 position_list[T-zero_start][b,zero_start:T+1,:] = True
         return position_list
 
     def test(self, setting, test=0):
+        torch.manual_seed(self.args.random_seed)
         test_data, test_loader = self._get_data(flag='test')
-        max_consecutive_length = math.ceil(T*self.args.mask_rate)
+        max_consecutive_length = math.ceil(self.args.pred_len*self.args.mask_rate)
         preds= []
         trues = []
         mse_results = []
         mae_results = []
+        #position_list_all = []
+        #mask_list = []
         with torch.no_grad():
             for i, (batch_x_raw, batch_y_raw, batch_x_mark, batch_y_mark) in enumerate(test_loader):
                 batch_x_raw = batch_x_raw.float().to(self.device).detach()
-
+                batch_x_mark = batch_x_mark.float().to(self.device).detach()
                 ## 填补
                 # random mask
                 B, T, N = batch_x_raw.shape
                 mask = torch.rand((B, T, 1)).to(self.device)
                 mask[mask <= self.args.mask_rate] = 0  # masked
                 mask[mask > self.args.mask_rate] = 1  # remained
-                mask.expand(B,T,N)
+                mask = mask.expand(B,T,N)
 
                 position_list = self.build_position_list(mask,max_consecutive_length)
+                #position_list_all.append(position_list)
+                #mask_list.append(mask.detach().cpu())
                 inp = batch_x_raw.masked_fill(mask == 0, 0)
 
                 # 输出
-                batch_x_imp = self.imputation_method(inp,batch_x_mark,mask,self.device)
+                batch_x_imp = self.imputation_method(inp,batch_x_mark,mask)
                 batch_x_imp = batch_x_imp.cpu()
-                
+                batch_x_raw = batch_x_raw.cpu()
                 for consecutive_length in range(1,max_consecutive_length+1):
                     preds.append(np.array(batch_x_imp[position_list[consecutive_length]]))
                     trues.append(np.array(batch_x_raw[position_list[consecutive_length]]))
@@ -142,13 +154,14 @@ class Exp_Count_Imp_Loss(Exp_Basic):
                 mae_results.append(-1)
 
         # result save
-        folder_path = './count_imp_loss'+'/'+self.args.dataset+'_'+self.args.pred_len+'_'+self.args.mask_rate+'/'
+        
+        folder_path = './count_imp_loss'+'/'+self.args.dataset+'_'+str(self.args.pred_len)+'_'+str(self.args.mask_rate)+'/'+(self.imp_args.model if self.args.imp_method =='DL' else self.args.imp_method) + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
-        
 
-        type_path = self.imp_args.model if self.method_type =='DL' else self.method_type + '/'
-        np.save(folder_path + type_path + 'mse.npy', np.array(mse_results))
-        np.save(folder_path + type_path + 'mae.npy',np.array(mae_results))
+        np.save(folder_path + 'mse.npy', np.array(mse_results))
+        np.save(folder_path + 'mae.npy',np.array(mae_results))
+        #np.save(folder_path + 'position.npy',np.array(position_list_all))
+        #np.save(folder_path + 'mask.npy',np.array(mask_list))
 
         return

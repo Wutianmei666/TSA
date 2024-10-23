@@ -3,11 +3,10 @@ import copy
 
 def _make_imp_args(ds_args):
     imp_args = copy.deepcopy(ds_args)
-    if ds_args.task_name == 'long_term_forecast':
+    if ds_args.task_name == 'long_term_forecast' or ds_args.task_name == 'count_imp_loss':
         imp_args.task_name ='imputation'
         imp_args.label_len = 0
         imp_args.pred_len = 0
-        
         # 通过json文件获取填补模型参数
         with open(imp_args.imp_args_json, 'r') as f:
             data = json.load(f)

@@ -71,7 +71,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                     mean_x =  masked_mean(batch_x,mask)
                     batch_x = batch_x*mask + mean_x*(1-mask)
                 else:
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    batch_x = interpolate(batch_x,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -150,10 +150,9 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                 # 判断插值类型
                 if self.args.interpolate == 'mean':
                     # 计算均值
-                    mean_x =  masked_mean(batch_x,mask)
-                    batch_x = batch_x*mask + mean_x*(1-mask)
+                    batch_x = masked_mean(batch_x,mask)
                 else:
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    batch_x = interpolate(batch_x,self.args.interpolate)
 
                 # decoder input
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float().to(self.device)
@@ -265,7 +264,7 @@ class Exp_Long_Term_Forecast_Imp_R(Exp_Basic):
                     mean_x =  masked_mean(batch_x,mask)
                     batch_x = batch_x*mask + mean_x*(1-mask)
                 else:
-                    batch_x = interpolate(batch_x,self.device,self.args.interpolate)
+                    batch_x = interpolate(batch_x,self.args.interpolate)
                 
                 # 复制一个
                 x_imp = batch_x.clone().detach().cpu()

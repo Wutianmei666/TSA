@@ -23,7 +23,7 @@ class Exp_Long_Term_Forecast_Imp_I(Exp_Basic):
     def __init__(self, args):
         super(Exp_Long_Term_Forecast_Imp_I, self).__init__(args)
         self.args = args
-        self.imp_model, self.img_args = self._bulid_imputation_model()
+        self.imp_model, self.imp_args = self._bulid_imputation_model()
         print("Using {} to imputate data".format(self.imp_args.model))
 
     def _build_model(self):

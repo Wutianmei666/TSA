@@ -3,7 +3,8 @@ import numpy as np
 from scipy.interpolate import interp1d 
 
 # 对mask后的tensor进行插值。interp1d()函数的kind参数决定了插值方法：nearest(最近邻)、linear(线性)
-def interpolate(tensor,device,kind):
+def interpolate(tensor,kind):
+    device = tensor.device
     tensor = tensor.cpu()
     B, T, N = tensor.shape
     filled_tensor = torch.zeros_like(tensor)
@@ -30,4 +31,6 @@ def masked_mean(x,mask):
     # 调整维度 [B,N]->[B,1,N]->[B,T,N]
     mean = mean.unsqueeze(1)
     mean = mean.expand(-1,T,-1)
-    return mean
+    # 将均值填补到掩码位置
+    x = x*mask + mean*(1-mask)
+    return x
